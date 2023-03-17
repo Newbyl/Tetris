@@ -35,6 +35,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     /* MyGLRenderer va implémenter les méthodes de cette interface */
 
     private final MyGLRenderer mRenderer;
+    private Grille grille = new Grille(7,7);
 
     public MyGLSurfaceView(Context context) {
         super(context);
@@ -44,6 +45,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
         // Création du renderer qui va être lié au conteneur View créé
         mRenderer = new MyGLRenderer();
+        mRenderer.setGrille(grille);
         setRenderer(mRenderer);
 
         // Option pour indiquer qu'on redessine uniquement si les données changent
@@ -54,6 +56,11 @@ public class MyGLSurfaceView extends GLSurfaceView {
     private float mPreviousX;
     private float mPreviousY;
     private boolean condition = false;
+
+
+
+
+
 
     /* Comment interpréter les événements sur l'écran tactile */
     @Override
@@ -117,11 +124,19 @@ public class MyGLSurfaceView extends GLSurfaceView {
             }
 
         }*/
+        this.grille.test();
+        mRenderer.setGrille(grille);
 
-        mRenderer.setPosition(-(x - screen_x/2),y - screen_y/2);
         requestRender();
 
         return true;
     }
+
+    public void bla(){
+        this.grille.test();
+        mRenderer.setGrille(grille);
+        requestRender();
+    }
+
 
 }

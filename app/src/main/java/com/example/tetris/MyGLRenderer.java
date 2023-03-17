@@ -30,7 +30,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private static final String TAG = "MyGLRenderer";
     private Square mSquare;
     private Square mSquare2;
-
+    private Grille grille ;
 
     // Les matrices habituelles Model/View/Projection
 
@@ -93,7 +93,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         //mSquare.draw(scratch);
 
         float taille = 75;
-
+        /*
         for (int i = 0; i < 7; i++) {
             Matrix.translateM(mModelMatrix, 0, mSquarePosition[0], mSquarePosition[1] + (i * (taille * 2)) , 0);
             Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
@@ -101,7 +101,18 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             new Square(mSquarePosition, i, taille).draw(scratch);
             Matrix.setIdentityM(mModelMatrix,0);
 
+        }*/
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 7; j++) {
+                Matrix.translateM(mModelMatrix, 0, mSquarePosition[0]+(i * (taille * 2)), mSquarePosition[1] + (j * (taille * 2)) , 0);
+                Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
+                if (grille.get(i,j)!=1){
+                    new Square(mSquarePosition, i%6, taille).draw(scratch);
+                }
+                Matrix.setIdentityM(mModelMatrix,0);
+            }
         }
+
 
 
     }
@@ -145,4 +156,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         return mSquarePosition;
     }
 
+    public Grille getGrille() {
+        return grille;
+    }
+
+    public void setGrille(Grille grille) {
+        this.grille = grille;
+    }
 }

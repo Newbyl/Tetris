@@ -27,16 +27,16 @@ public class Grille {
         l.add(0);
         l.add(1);
         l.add(1);
-        grille.set(0,l);
+        grille.set(5,l);
         System.out.println(grille);
     }
 
 
-    public int Get(int x , int y){
+    public int get(int x , int y){
         return this.grille.get(y).get(x);
     }
 
-    public void Test(){
+    public void test(){
         ArrayList<Integer> l;
         l = this.grille.get(6);
         this.grille.remove(6);

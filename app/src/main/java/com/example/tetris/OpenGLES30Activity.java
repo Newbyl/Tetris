@@ -14,7 +14,7 @@ openGLES.zip HelloOpenGLES20
  */
 
 
-public class OpenGLES30Activity extends Activity {
+public class OpenGLES30Activity extends Activity implements Runnable {
 
     // le conteneur View pour faire du rendu OpenGL
     private GLSurfaceView mGLView;
@@ -35,6 +35,14 @@ public class OpenGLES30Activity extends Activity {
 
         mGLView = new MyGLSurfaceView(this);
         /* Définition de View pour cette activité */
+
         setContentView(mGLView);
+
+
+    }
+
+    @Override
+    public void run() {
+
     }
 }
