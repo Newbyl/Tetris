@@ -23,6 +23,8 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
 
+import java.util.zip.GZIPInputStream;
+
 /* MyGLRenderer implémente l'interface générique GLSurfaceView.Renderer */
 
 public class MyGLRenderer implements GLSurfaceView.Renderer {
@@ -30,7 +32,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private static final String TAG = "MyGLRenderer";
     private Square mSquare;
     private Square mSquare2;
-    private Grille grille ;
     private int frame = 0;
     private float width;
     private float height;
@@ -42,7 +43,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private float[] mModelMatrix = new float[16];
 
     private float[] mSquarePosition = {0.0f, 0.0f};
-    //private float[] mSquarePosition2 = {0.0f, 200.0f};
+
+    private Grille grille;
 
     /* Première méthode équivalente à la fonction init en OpenGLSL */
     @Override
@@ -99,28 +101,49 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             Matrix.setIdentityM(mModelMatrix,0);
 
         }*/
-        if (frame == 10){
+        /*
+        if (frame == 2){
             frame = 0;
             this.grille.test();
         }
+
         frame++;
+        */
+
+        /*
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
                 Matrix.translateM(mModelMatrix, 0, (i * (taille * 2)),  (j * (taille * 2)) , 0);
                 Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
-                if (grille.get(i,j)!=1){
+                if (grille.get(i,j) != 1){
                     new Square(mSquarePosition, i%6, taille).draw(scratch);
                 }
                 mModelMatrix = setOrigin(mModelMatrix,taille);
-
-
             }
+        }
+        */
 
+        
+        Tetromino tetromino = new Tetromino("I");
+        grille.addForme(tetromino);
+
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 7; j++) {
+                Matrix.translateM(mModelMatrix, 0, (i * (taille * 2)),  (j * (taille * 2)) , 0);
+                Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
+
+
+                if (grille.getGrilleDynamique().get(j).get(i) != 0){
+                    new Square(mSquarePosition, tetromino.getTableauForme()[0][1] - 1, taille).draw(scratch);
+                }
+                mModelMatrix = setOrigin(mModelMatrix,taille);
+            }
         }
 
 
-
     }
+
+
 
     public float[] setOrigin(float[] mModelMatrix, int taille){
         Matrix.setIdentityM(mModelMatrix,0);

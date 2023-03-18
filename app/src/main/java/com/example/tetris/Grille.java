@@ -1,49 +1,68 @@
 package com.example.tetris;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 public class Grille {
-    private ArrayList< ArrayList<Integer>> grille;
+    private ArrayList<ArrayList<Integer>> grilleStatique;
+    private ArrayList<ArrayList<Integer>> grilleDynamique;
 
-
+    private int nbLigne;
+    private int nbColonne;
 
     public Grille(int x , int y) {
-        grille = new ArrayList<>(y);
+        this.grilleStatique = new ArrayList<>(y);
+        this.grilleDynamique = new ArrayList<>(y);
+
+        this.nbLigne = x;
+        this.nbColonne = y;
         for (int i = 0; i < y; i++) {
-            ArrayList<Integer> l = new ArrayList<>(x);
+            ArrayList<Integer> ligne = new ArrayList<>(x);
             for (int j = 0; j < x; j++) {
-                l.add(0);
+                ligne.add(0);
             }
-            this.grille.add(l);
+            this.grilleStatique.add(ligne);
+            this.grilleDynamique.add(ligne);
         }
-        ArrayList<Integer> l = new ArrayList<>();
-        l.add(1);
-        l.add(1);
-        l.add(0);
-        l.add(1);
-        l.add(0);
-        l.add(1);
-        l.add(1);
-        grille.set(5,l);
-        System.out.println(grille);
     }
 
+    /**
+     * Ajoute le tetromino a la grille dynamique
+     * @param tetromino
+     */
+    public void addForme(Tetromino tetromino){
+        int[][] forme = tetromino.getTableauForme();
+        int milieu = nbColonne / 2;
+
+        grilleDynamique.get(nbLigne - 1).set(milieu - 1, forme[0][0]);
+        grilleDynamique.get(nbLigne - 1).set(milieu, forme[0][1]);
+        grilleDynamique.get(nbLigne - 1).set(milieu + 1, forme[0][2]);
+
+        grilleDynamique.get(nbLigne - 2).set(milieu - 1, forme[1][0]);
+        grilleDynamique.get(nbLigne - 2).set(milieu, forme[1][1]);
+        grilleDynamique.get(nbLigne - 2).set(milieu + 1, forme[1][2]);
+
+    }
 
     public int get(int x , int y){
-        return this.grille.get(y).get(x);
+        return this.grilleDynamique.get(y).get(x);
     }
 
     public void test(){
         ArrayList<Integer> l;
-        l = this.grille.get(6);
-        this.grille.remove(6);
-        this.grille.add(0,l);
+        l = this.grilleStatique.get(6);
+        this.grilleStatique.remove(6);
+        this.grilleStatique.add(0,l);
     }
 
     public int getTaille(){
-        return this.grille.get(0).size();
+        return this.grilleStatique.get(0).size();
+    }
+
+    public ArrayList<ArrayList<Integer>> getGrilleStatique() {
+        return grilleStatique;
+    }
+
+    public ArrayList<ArrayList<Integer>> getGrilleDynamique() {
+        return grilleDynamique;
     }
 }
