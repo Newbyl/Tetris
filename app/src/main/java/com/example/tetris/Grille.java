@@ -42,4 +42,8 @@ public class Grille {
         this.grille.remove(6);
         this.grille.add(0,l);
     }
+
+    public int getTaille(){
+        return this.grille.get(0).size();
+    }
 }

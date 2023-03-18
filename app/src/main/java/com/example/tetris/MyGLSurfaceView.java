@@ -46,10 +46,12 @@ public class MyGLSurfaceView extends GLSurfaceView {
         // Création du renderer qui va être lié au conteneur View créé
         mRenderer = new MyGLRenderer();
         mRenderer.setGrille(grille);
+
+
         setRenderer(mRenderer);
 
         // Option pour indiquer qu'on redessine uniquement si les données changent
-        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
     }
 
     /* pour gérer la translation */
@@ -132,11 +134,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         return true;
     }
 
-    public void bla(){
-        this.grille.test();
-        mRenderer.setGrille(grille);
-        requestRender();
-    }
+
 
 
 }

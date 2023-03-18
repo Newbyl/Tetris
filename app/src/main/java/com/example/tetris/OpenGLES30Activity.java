@@ -9,12 +9,14 @@ import android.opengl.GLSurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.Nullable;
+
 /* Ce tutorial est issu d'un tutorial http://developer.android.com/training/graphics/opengl/index.html :
 openGLES.zip HelloOpenGLES20
  */
 
 
-public class OpenGLES30Activity extends Activity implements Runnable {
+public class OpenGLES30Activity extends Activity   {
 
     // le conteneur View pour faire du rendu OpenGL
     private GLSurfaceView mGLView;
@@ -39,10 +41,8 @@ public class OpenGLES30Activity extends Activity implements Runnable {
         setContentView(mGLView);
 
 
-    }
-
-    @Override
-    public void run() {
 
     }
+
+
 }

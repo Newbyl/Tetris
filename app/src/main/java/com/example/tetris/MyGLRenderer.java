@@ -31,13 +31,15 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Square mSquare;
     private Square mSquare2;
     private Grille grille ;
-
+    private int frame = 0;
+    private float width;
+    private float height;
     // Les matrices habituelles Model/View/Projection
 
-    private final float[] mMVPMatrix = new float[16];
+    private float[] mMVPMatrix = new float[16];
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
-    private final float[] mModelMatrix = new float[16];
+    private float[] mModelMatrix = new float[16];
 
     private float[] mSquarePosition = {0.0f, 0.0f};
     //private float[] mSquarePosition2 = {0.0f, 200.0f};
@@ -58,7 +60,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 unused) {
         float[] scratch = new float[16]; // pour stocker une matrice
-
+        int taille = (int) (width/grille.getTaille()/2);
         // glClear rien de nouveau on vide le buffer de couleur et de profondeur */
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
 
@@ -74,17 +76,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
-        Matrix.setIdentityM(mModelMatrix,0);
+        mModelMatrix = setOrigin(mModelMatrix,taille);
 
         /* Pour définir une translation on donne les paramètres de la translation
         et la matrice (ici mModelMatrix) est multipliée par la translation correspondante
          */
         //Matrix.translateM(mModelMatrix, 0, mSquarePosition[0], mSquarePosition[1], 0);
-
-
-        Log.d("Renderer", "mSquarex"+Float.toString(mSquarePosition[0]));
-        Log.d("Renderer", "mSquarey"+Float.toString(mSquarePosition[1]));
-
         /* scratch est la matrice PxVxM finale */
         //Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
 
@@ -92,7 +89,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         /* on appelle la méthode dessin du carré élémentaire */
         //mSquare.draw(scratch);
 
-        float taille = 75;
+
         /*
         for (int i = 0; i < 7; i++) {
             Matrix.translateM(mModelMatrix, 0, mSquarePosition[0], mSquarePosition[1] + (i * (taille * 2)) , 0);
@@ -102,19 +99,34 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             Matrix.setIdentityM(mModelMatrix,0);
 
         }*/
+        if (frame == 10){
+            frame = 0;
+            this.grille.test();
+        }
+        frame++;
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
-                Matrix.translateM(mModelMatrix, 0, mSquarePosition[0]+(i * (taille * 2)), mSquarePosition[1] + (j * (taille * 2)) , 0);
+                Matrix.translateM(mModelMatrix, 0, (i * (taille * 2)),  (j * (taille * 2)) , 0);
                 Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
                 if (grille.get(i,j)!=1){
                     new Square(mSquarePosition, i%6, taille).draw(scratch);
                 }
-                Matrix.setIdentityM(mModelMatrix,0);
+                mModelMatrix = setOrigin(mModelMatrix,taille);
+
+
             }
+
         }
 
 
 
+    }
+
+    public float[] setOrigin(float[] mModelMatrix, int taille){
+        Matrix.setIdentityM(mModelMatrix,0);
+        Matrix.translateM(mModelMatrix,0,-(float)width/2+taille,-(float)height / 2+taille,0);
+
+        return mModelMatrix;
     }
 
     /* équivalent au Reshape en OpenGLSL */
@@ -125,7 +137,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
          */
         GLES30.glViewport(0, 0, width, height);
         Matrix.orthoM(mProjectionMatrix, 0, -(float)width / 2, (float)width / 2, -(float)height / 2, (float)height / 2, -1.0f, 1.0f);
-
+        this.height=height;
+        this.width = width;
+        System.out.println("hhhhhhhhhhhhhh:"+height);
+        System.out.println("wwwwwwwwwwwwww:"+width);
     }
 
     /* La gestion des shaders ... */
@@ -163,4 +178,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     public void setGrille(Grille grille) {
         this.grille = grille;
     }
+
+
+
 }
