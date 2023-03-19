@@ -35,7 +35,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     /* MyGLRenderer va implémenter les méthodes de cette interface */
 
     private final MyGLRenderer mRenderer;
-    private Grille grille = new Grille(7,7);
+    private Grille grille = new Grille(100,50);
 
     public MyGLSurfaceView(Context context) {
         super(context);
@@ -45,9 +45,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
         // Création du renderer qui va être lié au conteneur View créé
         mRenderer = new MyGLRenderer();
+        Tetromino tetromino = new Tetromino("J");
+        grille.addForme(tetromino);
         mRenderer.setGrille(grille);
-
-
         setRenderer(mRenderer);
 
         // Option pour indiquer qu'on redessine uniquement si les données changent

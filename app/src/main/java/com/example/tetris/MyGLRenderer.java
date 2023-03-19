@@ -62,8 +62,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 unused) {
         float[] scratch = new float[16]; // pour stocker une matrice
-        int taille = (int) (width/grille.getTaille()/2);
-        // glClear rien de nouveau on vide le buffer de couleur et de profondeur */
+        int taille = Integer.min((int) (width/grille.getNbColonne()/2),(int) (height/grille.getNbLigne()/2));
+        // glClear rien de nouveau on vide le buffer d,e couleur et de profondeur */
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
 
         /* on utilise une classe Matrix (similaire à glm) pour définir nos matrices P, V et M*/
@@ -124,17 +124,27 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         */
 
         
-        Tetromino tetromino = new Tetromino("I");
-        grille.addForme(tetromino);
 
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 7; j++) {
+        if (frame == 1){
+            frame = 0;
+            this.grille.test();
+        }
+
+        frame++;
+
+
+
+        for (int i = 0; i < grille.getNbColonne()-1; i++) {
+            for (int j = 0; j < grille.getNbLigne()-1; j++) {
                 Matrix.translateM(mModelMatrix, 0, (i * (taille * 2)),  (j * (taille * 2)) , 0);
                 Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
 
 
                 if (grille.getGrilleDynamique().get(j).get(i) != 0){
-                    new Square(mSquarePosition, tetromino.getTableauForme()[0][1] - 1, taille).draw(scratch);
+                    new Square(mSquarePosition, 3, taille).draw(scratch);
+                }
+                else {
+                    //new Square(mSquarePosition, 7, taille).draw(scratch);
                 }
                 mModelMatrix = setOrigin(mModelMatrix,taille);
             }

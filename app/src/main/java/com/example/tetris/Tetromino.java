@@ -23,7 +23,7 @@ public class Tetromino {
                 break;
             case "J":
                 this.tableauForme = new int[][]{{5, 5, 5},
-                                                {0, 5, 0}};
+                                                {0, 0, 5}};
                 break;
             case "Z":
                 this.tableauForme = new int[][]{{6, 6, 0},

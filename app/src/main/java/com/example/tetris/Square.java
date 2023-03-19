@@ -128,13 +128,13 @@ public class Square {
 
 
 
-    /*
+
     static float squareColors[] = {
              1.0f,  0.0f, 0.0f, 1.0f,
              1.0f,  1.0f, 1.0f, 1.0f,
              0.0f,  1.0f, 0.0f, 1.0f,
              0.0f,  0.0f, 1.0f, 1.0f };
-     */
+
 
     // Le carré est dessiné avec 2 triangles
     private final short Indices[] = { 0, 1, 2, 0, 2, 3 };
@@ -192,6 +192,9 @@ public class Square {
                 break;
             case 6:
                 colorBuffer.put(tetraminoS);
+                break;
+            case 7:
+                colorBuffer.put(squareColors);
                 break;
         }
 
