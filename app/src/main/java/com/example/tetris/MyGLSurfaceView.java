@@ -131,8 +131,12 @@ public class MyGLSurfaceView extends GLSurfaceView {
             }
 
         }*/
-        this.grille.test();
-        mRenderer.setGrille(grille);
+
+
+        if (e.getAction() == MotionEvent.ACTION_DOWN){
+            grille.addForme(new Tetromino("I"));
+            mRenderer.setGrille(grille);
+        }
 
         requestRender();
 

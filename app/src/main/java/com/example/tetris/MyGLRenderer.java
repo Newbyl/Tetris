@@ -213,6 +213,4 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.grille = grille;
     }
 
-
-
 }

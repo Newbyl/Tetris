@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Grille {
     private ArrayList<ArrayList<Integer>> grilleStatique;
     private ArrayList<ArrayList<Integer>> grilleDynamique;
+    private ArrayList<ArrayList<Integer>> grilleVide;
 
     private int nbLigne;
     private int nbColonne;
@@ -12,20 +13,27 @@ public class Grille {
     public Grille(int nbLigne, int nbColonne) {
         this.grilleStatique = new ArrayList<>(nbLigne);
         this.grilleDynamique = new ArrayList<>(nbLigne);
+        this.grilleVide = new ArrayList<>(nbLigne);
+
 
         this.nbLigne = nbLigne;
         this.nbColonne = nbColonne;
         for (int i = 0; i < nbLigne; i++) {
             ArrayList<Integer> ligne = new ArrayList<>(nbColonne);
             ArrayList<Integer> ligne2 = new ArrayList<>(nbColonne);
+            ArrayList<Integer> ligne3 = new ArrayList<>(nbColonne);
             for (int j = 0; j < nbColonne; j++) {
                 ligne.add(0);
                 ligne2.add(0);
+                ligne3.add(0);
             }
             this.grilleStatique.add(ligne2);
             this.grilleDynamique.add(ligne);
+            this.grilleVide.add(ligne3);
         }
     }
+
+
 
     /**
      * Ajoute le tetromino a la grille dynamique
@@ -53,24 +61,33 @@ public class Grille {
         ArrayList<Integer> l;
         l = this.grilleDynamique.get(0);
         this.grilleDynamique.remove(0);
-        this.grilleDynamique.add(nbLigne-1,l);
+        this.grilleDynamique.add(nbLigne-1,grilleVide.get(0));
     }
 
 
     public void recopieDynamiqueVersStatique() {
         for (int i = 0; i < nbLigne; i++)
             for (int j = 0 ; j < nbColonne; j++)
-                if (grilleDynamique.get(i).get(j) != 0)
+                if (grilleDynamique.get(i).get(j) != 0) {
                     grilleStatique.get(i).set(j, grilleDynamique.get(i).get(j));
+                }
+
     }
 
     public Boolean testCollision() {
         for (int i = 0; i < nbLigne-1; i++)
             for (int j = 0 ; j < nbColonne; j++){
-                if ((grilleDynamique.get(i).get(j) != 0 && grilleStatique.get(i+1).get(j) >= 1)
-                        || (grilleDynamique.get(i).get(j) != 0 && i == 0)) {
+                if (i == 0 && grilleDynamique.get(i).get(j) != 0){
                     recopieDynamiqueVersStatique();
+                    grilleDynamique = new ArrayList<>(grilleVide);
                     return true;
+                }
+                else{
+                    if (grilleDynamique.get(i).get(j) != 0 && grilleStatique.get(i-1).get(j) >= 1) {
+                        recopieDynamiqueVersStatique();
+                        grilleDynamique = new ArrayList<>(grilleVide);
+                        return true;
+                    }
                 }
             }
         return false;
