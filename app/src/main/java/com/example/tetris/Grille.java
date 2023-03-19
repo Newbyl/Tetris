@@ -33,13 +33,13 @@ public class Grille {
         int[][] forme = tetromino.getTableauForme();
         int milieu = nbColonne / 2;
 
-        grilleDynamique.get(nbLigne - 2).set(milieu - 1, forme[0][0]);
-        grilleDynamique.get(nbLigne - 2).set(milieu, forme[0][1]);
-        grilleDynamique.get(nbLigne - 2).set(milieu + 1, forme[0][2]);
+        grilleDynamique.get(nbLigne - 1).set(milieu - 1, forme[0][0]);
+        grilleDynamique.get(nbLigne - 1).set(milieu, forme[0][1]);
+        grilleDynamique.get(nbLigne - 1).set(milieu + 1, forme[0][2]);
 
-        grilleDynamique.get(nbLigne - 3).set(milieu - 1, forme[1][0]);
-        grilleDynamique.get(nbLigne - 3).set(milieu, forme[1][1]);
-        grilleDynamique.get(nbLigne - 3).set(milieu + 1, forme[1][2]);
+        grilleDynamique.get(nbLigne - 2).set(milieu - 1, forme[1][0]);
+        grilleDynamique.get(nbLigne - 2).set(milieu, forme[1][1]);
+        grilleDynamique.get(nbLigne - 2).set(milieu + 1, forme[1][2]);
 
     }
 
@@ -51,7 +51,7 @@ public class Grille {
         ArrayList<Integer> l;
         l = this.grilleDynamique.get(0);
         this.grilleDynamique.remove(0);
-        this.grilleDynamique.add(nbLigne-2,l);
+        this.grilleDynamique.add(nbLigne-1,l);
     }
 
 

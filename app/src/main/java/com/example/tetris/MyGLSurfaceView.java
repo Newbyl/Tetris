@@ -35,7 +35,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     /* MyGLRenderer va implémenter les méthodes de cette interface */
 
     private final MyGLRenderer mRenderer;
-    private Grille grille = new Grille(100,50);
+    private Grille grille = new Grille(20,10);
 
     public MyGLSurfaceView(Context context) {
         super(context);

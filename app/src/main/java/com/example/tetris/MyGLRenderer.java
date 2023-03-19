@@ -125,7 +125,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         
 
-        if (frame == 1){
+        if (frame == 4){
             frame = 0;
             this.grille.test();
 
@@ -135,8 +135,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 
 
-        for (int i = 0; i < grille.getNbColonne()-1; i++) {
-            for (int j = 0; j < grille.getNbLigne()-1; j++) {
+        for (int i = 0; i < grille.getNbColonne(); i++) {
+            for (int j = 0; j < grille.getNbLigne(); j++) {
                 Matrix.translateM(mModelMatrix, 0, (i * (taille * 2)),  (j * (taille * 2)) , 0);
                 Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
 
@@ -145,7 +145,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                     new Square(mSquarePosition, 3, taille).draw(scratch);
                 }
                 else {
-                    //new Square(mSquarePosition, 7, taille).draw(scratch);
+                    new Square(mSquarePosition, 7, taille).draw(scratch);
                 }
                 mModelMatrix = setOrigin(mModelMatrix,taille);
             }
