@@ -128,7 +128,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         if (frame == 4){
             frame = 0;
             this.grille.test();
-
+            this.grille.testCollision();
         }
 
         frame++;
@@ -145,11 +145,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                     new Square(mSquarePosition, 3, taille).draw(scratch);
                 }
                 else {
-                    new Square(mSquarePosition, 7, taille).draw(scratch);
+                    //new Square(mSquarePosition, 7, taille).draw(scratch);
                 }
                 mModelMatrix = setOrigin(mModelMatrix,taille);
             }
         }
+
+
 
 
     }

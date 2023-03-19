@@ -9,7 +9,7 @@ public class Grille {
     private int nbLigne;
     private int nbColonne;
 
-    public Grille(int nbLigne , int nbColonne) {
+    public Grille(int nbLigne, int nbColonne) {
         this.grilleStatique = new ArrayList<>(nbLigne);
         this.grilleDynamique = new ArrayList<>(nbLigne);
 
@@ -17,10 +17,12 @@ public class Grille {
         this.nbColonne = nbColonne;
         for (int i = 0; i < nbLigne; i++) {
             ArrayList<Integer> ligne = new ArrayList<>(nbColonne);
+            ArrayList<Integer> ligne2 = new ArrayList<>(nbColonne);
             for (int j = 0; j < nbColonne; j++) {
                 ligne.add(0);
+                ligne2.add(0);
             }
-            this.grilleStatique.add(ligne);
+            this.grilleStatique.add(ligne2);
             this.grilleDynamique.add(ligne);
         }
     }
@@ -63,10 +65,10 @@ public class Grille {
     }
 
     public Boolean testCollision() {
-        for (int i = 0; i < nbLigne; i++)
+        for (int i = 0; i < nbLigne-1; i++)
             for (int j = 0 ; j < nbColonne; j++){
                 if ((grilleDynamique.get(i).get(j) != 0 && grilleStatique.get(i+1).get(j) >= 1)
-                        || (grilleDynamique.get(i).get(j) != 0 && i == nbLigne - 1)) {
+                        || (grilleDynamique.get(i).get(j) != 0 && i == 0)) {
                     recopieDynamiqueVersStatique();
                     return true;
                 }
