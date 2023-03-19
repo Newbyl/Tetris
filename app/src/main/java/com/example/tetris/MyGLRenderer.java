@@ -128,6 +128,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         if (frame == 1){
             frame = 0;
             this.grille.test();
+
         }
 
         frame++;
@@ -140,7 +141,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
 
 
-                if (grille.getGrilleDynamique().get(j).get(i) != 0){
+                if (grille.getGrilleDynamique().get(j).get(i) != 0 || grille.getGrilleStatique().get(j).get(i) != 0){
                     new Square(mSquarePosition, 3, taille).draw(scratch);
                 }
                 else {
@@ -172,8 +173,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.orthoM(mProjectionMatrix, 0, -(float)width / 2, (float)width / 2, -(float)height / 2, (float)height / 2, -1.0f, 1.0f);
         this.height=height;
         this.width = width;
-        System.out.println("hhhhhhhhhhhhhh:"+height);
-        System.out.println("wwwwwwwwwwwwww:"+width);
     }
 
     /* La gestion des shaders ... */

@@ -54,6 +54,26 @@ public class Grille {
         this.grilleDynamique.add(nbLigne-2,l);
     }
 
+
+    public void recopieDynamiqueVersStatique() {
+        for (int i = 0; i < nbLigne; i++)
+            for (int j = 0 ; j < nbColonne; j++)
+                if (grilleDynamique.get(i).get(j) != 0)
+                    grilleStatique.get(i).set(j, grilleDynamique.get(i).get(j));
+    }
+
+    public Boolean testCollision() {
+        for (int i = 0; i < nbLigne; i++)
+            for (int j = 0 ; j < nbColonne; j++){
+                if ((grilleDynamique.get(i).get(j) != 0 && grilleStatique.get(i+1).get(j) >= 1)
+                        || (grilleDynamique.get(i).get(j) != 0 && i == nbLigne - 1)) {
+                    recopieDynamiqueVersStatique();
+                    return true;
+                }
+            }
+        return false;
+    }
+
     public int getTaille(){
         return this.grilleStatique.get(0).size();
     }
