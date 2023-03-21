@@ -23,6 +23,8 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.zip.GZIPInputStream;
 
 /* MyGLRenderer implémente l'interface générique GLSurfaceView.Renderer */
@@ -125,14 +127,17 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         
 
-        if (frame == 4){
+        if (frame == 2){
             frame = 0;
-            this.grille.test();
-            this.grille.testCollision();
+            //this.grille.test();
+
+
         }
-
         frame++;
+        if (grille.estVide()){
 
+            aforme();
+        }
 
 
         for (int i = 0; i < grille.getNbColonne(); i++) {
@@ -140,9 +145,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 Matrix.translateM(mModelMatrix, 0, (i * (taille * 2)),  (j * (taille * 2)) , 0);
                 Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
 
-
                 if (grille.getGrilleDynamique().get(j).get(i) != 0 || grille.getGrilleStatique().get(j).get(i) != 0){
-                    new Square(mSquarePosition, 3, taille).draw(scratch);
+                    new Square(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),grille.getGrilleStatique().get(j).get(i))-1, taille).draw(scratch);
                 }
                 else {
                     //new Square(mSquarePosition, 7, taille).draw(scratch);
@@ -150,9 +154,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 mModelMatrix = setOrigin(mModelMatrix,taille);
             }
         }
-
-
-
 
     }
 
@@ -201,6 +202,23 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     }
 
+    public void aforme(){
+
+        ArrayList<String> tt = new ArrayList<String>();
+        tt.add("I");
+        tt.add("O");
+        tt.add("T");
+        tt.add("L");
+        tt.add("J");
+        Random rand = new Random();
+
+
+        grille.addForme(new Tetromino(tt.get(rand.nextInt(tt.size()))));
+    }
+
+    public void d(){
+        grille.gauche();
+    }
     public float[] getPosition() {
         return mSquarePosition;
     }

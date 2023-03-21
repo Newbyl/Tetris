@@ -33,23 +33,24 @@ public class Grille {
         }
     }
 
-
-
     /**
      * Ajoute le tetromino a la grille dynamique
      * @param tetromino
      */
     public void addForme(Tetromino tetromino){
-        int[][] forme = tetromino.getTableauForme();
-        int milieu = nbColonne / 2;
 
-        grilleDynamique.get(nbLigne - 1).set(milieu - 1, forme[0][0]);
-        grilleDynamique.get(nbLigne - 1).set(milieu, forme[0][1]);
-        grilleDynamique.get(nbLigne - 1).set(milieu + 1, forme[0][2]);
+        if (estVide()) {
+            int[][] forme = tetromino.getTableauForme();
+            int milieu = nbColonne / 2;
 
-        grilleDynamique.get(nbLigne - 2).set(milieu - 1, forme[1][0]);
-        grilleDynamique.get(nbLigne - 2).set(milieu, forme[1][1]);
-        grilleDynamique.get(nbLigne - 2).set(milieu + 1, forme[1][2]);
+            grilleDynamique.get(nbLigne - 1).set(milieu - 1, forme[0][0]);
+            grilleDynamique.get(nbLigne - 1).set(milieu, forme[0][1]);
+            grilleDynamique.get(nbLigne - 1).set(milieu + 1, forme[0][2]);
+
+            grilleDynamique.get(nbLigne - 2).set(milieu - 1, forme[1][0]);
+            grilleDynamique.get(nbLigne - 2).set(milieu, forme[1][1]);
+            grilleDynamique.get(nbLigne - 2).set(milieu + 1, forme[1][2]);
+        }
 
     }
 
@@ -58,10 +59,96 @@ public class Grille {
     }
 
     public void test(){
-        ArrayList<Integer> l;
-        l = this.grilleDynamique.get(0);
-        this.grilleDynamique.remove(0);
-        this.grilleDynamique.add(nbLigne-1,grilleVide.get(0));
+        ArrayList<ArrayList<Integer>> tmp = clone(grilleVide);
+        //System.out.println(tmp);
+        boolean end = false;
+        for (int i = 0; i < nbColonne; i++) {
+            if (grilleDynamique.get(0).get(i)!=0){
+                end = true;
+            }
+        }
+        //System.out.println("dyn :" + grilleDynamique);
+        if (!end) {
+            for (int i = 1; i < nbLigne; i++) {
+                for (int j = 0; j < nbColonne; j++) {
+                    tmp.get(i - 1).set(j, grilleDynamique.get(i).get(j));
+                }
+            }
+
+            if (testCollision(tmp)) {
+                recopieDynamiqueVersStatique();
+                System.out.println("collision");
+            } else {
+                this.grilleDynamique = clone(tmp);
+            }
+        }
+        else {
+            recopieDynamiqueVersStatique();
+        }
+        //System.out.println("tmp :" + tmp);
+
+        //System.out.println("vide :" + grilleVide);
+
+    }
+
+
+    public void droit(){
+        ArrayList<ArrayList<Integer>> tmp = clone(grilleVide);
+        //System.out.println(tmp);
+        boolean end = false;
+        for (int i = 0; i < nbLigne; i++) {
+            if (grilleDynamique.get(i).get(nbColonne-1)!=0){
+                end = true;
+            }
+        }
+        //System.out.println("dyn :" + grilleDynamique);
+        if (!end) {
+            for (int i = 0; i < nbLigne; i++) {
+                for (int j = nbColonne-2; j >= 0; j--) {
+                    tmp.get(i).set(j+1, grilleDynamique.get(i).get(j));
+                }
+            }
+
+            if (testCollision(tmp)) {
+
+            } else {
+                this.grilleDynamique = clone(tmp);
+            }
+        }
+        //System.out.println("tmp :" + tmp);
+
+        //System.out.println("vide :" + grilleVide);
+
+    }
+
+
+    public void gauche(){
+        ArrayList<ArrayList<Integer>> tmp = clone(grilleVide);
+        //System.out.println(tmp);
+        boolean end = false;
+        for (int i = 0; i < nbLigne; i++) {
+            if (grilleDynamique.get(i).get(0)!=0){
+                end = true;
+            }
+        }
+        //System.out.println("dyn :" + grilleDynamique);
+        if (!end) {
+            for (int i = 0; i < nbLigne; i++) {
+                for (int j = 1; j < nbColonne; j++) {
+                    tmp.get(i).set(j-1, grilleDynamique.get(i).get(j));
+                }
+            }
+
+            if (testCollision(tmp)) {
+
+            } else {
+                this.grilleDynamique = clone(tmp);
+            }
+        }
+        //System.out.println("tmp :" + tmp);
+
+        //System.out.println("vide :" + grilleVide);
+
     }
 
 
@@ -71,27 +158,37 @@ public class Grille {
                 if (grilleDynamique.get(i).get(j) != 0) {
                     grilleStatique.get(i).set(j, grilleDynamique.get(i).get(j));
                 }
+        grilleDynamique = clone(grilleVide);
+
 
     }
 
-    public Boolean testCollision() {
-        for (int i = 0; i < nbLigne-1; i++)
+    public Boolean testCollision(ArrayList<ArrayList<Integer>> tmp) {
+        for (int i = 0; i < nbLigne; i++)
             for (int j = 0 ; j < nbColonne; j++){
-                if (i == 0 && grilleDynamique.get(i).get(j) != 0){
-                    recopieDynamiqueVersStatique();
-                    grilleDynamique = new ArrayList<>(grilleVide);
+                /*if (i == 0 && tmp.get(i).get(j) != 0){
+                    //recopieDynamiqueVersStatique();
+                    //grilleDynamique = new ArrayList<>(grilleVide);
                     return true;
                 }
                 else{
-                    if (grilleDynamique.get(i).get(j) != 0 && grilleStatique.get(i-1).get(j) >= 1) {
-                        recopieDynamiqueVersStatique();
-                        grilleDynamique = new ArrayList<>(grilleVide);
+                    if (tmp.get(i).get(j) != 0 && grilleStatique.get(i-1).get(j) >= 1) {
+                        //recopieDynamiqueVersStatique();
+                        //grilleDynamique = new ArrayList<>(grilleVide);
                         return true;
-                    }
+                    }*/
+
+                if (tmp.get(i).get(j) != 0 && grilleStatique.get(i).get(j) >= 1) {
+                    //recopieDynamiqueVersStatique();
+                    //grilleDynamique = new ArrayList<>(grilleVide);
+                    return true;
                 }
             }
+
+
         return false;
     }
+
 
     public int getTaille(){
         return this.grilleStatique.get(0).size();
@@ -105,6 +202,31 @@ public class Grille {
         return grilleDynamique;
     }
 
+
+    public ArrayList<ArrayList<Integer>> clone(ArrayList<ArrayList<Integer>> source){
+        ArrayList<ArrayList<Integer>> tmp = new ArrayList<>(nbLigne);
+        for (int i = 0; i < nbLigne; i++) {
+            ArrayList<Integer> ligne = new ArrayList<>(nbColonne);
+            for (int j = 0; j < nbColonne; j++) {
+                ligne.add(source.get(i).get(j));
+            }
+            tmp.add(ligne);
+        }
+        return tmp;
+    }
+
+
+    public Boolean estVide(){
+
+        for (int i = 0; i < nbLigne; i++) {
+            for (int j = 0; j < nbColonne; j++) {
+                if (grilleDynamique.get(i).get(j)!=0){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     public int getNbLigne() {
         return nbLigne;
     }

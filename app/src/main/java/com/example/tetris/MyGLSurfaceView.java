@@ -19,6 +19,7 @@ package com.example.tetris;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.MotionEvent;
 
 /* La classe MyGLSurfaceView avec en particulier la gestion des événements
@@ -35,7 +36,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     /* MyGLRenderer va implémenter les méthodes de cette interface */
 
     private final MyGLRenderer mRenderer;
-    private Grille grille = new Grille(20,10);
+    public Grille grille = new Grille(20,10);
 
     public MyGLSurfaceView(Context context) {
         super(context);
@@ -51,12 +52,11 @@ public class MyGLSurfaceView extends GLSurfaceView {
         grille.addForme(tetromino);
 
 
-
         mRenderer.setGrille(grille);
         setRenderer(mRenderer);
 
         // Option pour indiquer qu'on redessine uniquement si les données changent
-        setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
     /* pour gérer la translation */
@@ -134,8 +134,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 
         if (e.getAction() == MotionEvent.ACTION_DOWN){
-            grille.addForme(new Tetromino("I"));
-            mRenderer.setGrille(grille);
+            mRenderer.d();
         }
 
         requestRender();
@@ -143,7 +142,10 @@ public class MyGLSurfaceView extends GLSurfaceView {
         return true;
     }
 
+    @Override
+    public boolean onDragEvent(DragEvent event) {
 
-
-
+        System.out.println(event.getAction());
+        return  true;
+    }
 }
