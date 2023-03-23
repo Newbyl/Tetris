@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 
+
 /* La classe MyGLSurfaceView avec en particulier la gestion des événements
   et la création de l'objet renderer
 
@@ -57,6 +58,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
         // Option pour indiquer qu'on redessine uniquement si les données changent
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+
     }
 
     /* pour gérer la translation */
@@ -113,39 +115,31 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
         Log.d("message","test_square="+Boolean.toString(test_square));
         Log.d("message","condition="+Boolean.toString(condition));
-        /*
-        if (condition || test_square) {
-
-            switch (e.getAction()) {
-
-                case MotionEvent.ACTION_DOWN:
-                    mPreviousX = x;
-                    mPreviousY = y;
-                    condition=true;
-                    break;
-                case MotionEvent.ACTION_UP:
-                   mRenderer.setPosition(0.0f,-9.0f);
-                    requestRender(); // Pour relancer le dessin
-                    condition=false;
-
-            }
-
-        }*/
 
 
-        if (e.getAction() == MotionEvent.ACTION_DOWN){
-            mRenderer.d();
+
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mPreviousX = x;
+                mPreviousY = y;
+                break;
+            case MotionEvent.ACTION_UP:
+                mRenderer.setPosition(0.0f,-9.0f);
+                if ((mPreviousX < e.getX()) && ((mPreviousX - e.getX() > 50) || (mPreviousX - e.getX() < -50)))
+                {
+                    grille.droit();
+                    requestRender();
+                    return true;
+                }
+                // J'ai mis les borne pour eviter de deplacer si on drag pas assez
+                else if ((mPreviousX > e.getX()) && ((mPreviousX - e.getX() > 50) || (mPreviousX - e.getX() < -50)))
+                {
+                    grille.gauche();
+                    requestRender();
+                    return true;
+                }
         }
-
         requestRender();
-
         return true;
-    }
-
-    @Override
-    public boolean onDragEvent(DragEvent event) {
-
-        System.out.println(event.getAction());
-        return  true;
     }
 }
