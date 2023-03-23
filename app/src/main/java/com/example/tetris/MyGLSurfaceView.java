@@ -19,7 +19,6 @@ package com.example.tetris;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.MotionEvent;
 
 
@@ -57,7 +56,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         setRenderer(mRenderer);
 
         // Option pour indiquer qu'on redessine uniquement si les données changent
-        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        //setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
     }
 

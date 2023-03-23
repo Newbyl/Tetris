@@ -15,17 +15,15 @@
  */
 package com.example.tetris;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
-
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.zip.GZIPInputStream;
+
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
 
 /* MyGLRenderer implémente l'interface générique GLSurfaceView.Renderer */
 
@@ -64,6 +62,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 unused) {
         float[] scratch = new float[16]; // pour stocker une matrice
+        float[] scratch2 = new float[16]; // pour stocker une matrice
         int taille = Integer.min((int) (width/grille.getNbColonne()/2),(int) (height/grille.getNbLigne()/2));
         // glClear rien de nouveau on vide le buffer d,e couleur et de profondeur */
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
@@ -125,21 +124,31 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         }
         */
 
-        
-
-        if (frame == 2){
+        if (frame == 4){
             frame = 0;
-            //this.grille.test();
-
-
+            this.grille.test();
+            this.grille.testLigneComplete();
         }
-        frame++;
-        if (grille.estVide()){
 
+        frame++;
+
+        if (grille.estVide()){
             aforme();
         }
 
+        /*
+        if (SystemClock.uptimeMillis() % 4L == 0)
+        {
+            this.grille.test();
+        }
 
+
+        if (grille.estVide()){
+            aforme();
+        }
+        */
+
+        /*
         for (int i = 0; i < grille.getNbColonne(); i++) {
             for (int j = 0; j < grille.getNbLigne(); j++) {
                 Matrix.translateM(mModelMatrix, 0, (i * (taille * 2)),  (j * (taille * 2)) , 0);
@@ -153,7 +162,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 }
                 mModelMatrix = setOrigin(mModelMatrix,taille);
             }
-        }
+        }*/
+
+        drawGrilleDynamique(scratch, grille, taille);
+        drawGrilleStatique(scratch2, grille, taille);
+
+
 
     }
 
@@ -164,6 +178,38 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.translateM(mModelMatrix,0,-(float)width/2+taille,-(float)height / 2+taille,0);
 
         return mModelMatrix;
+    }
+
+    public void drawGrilleStatique(float[] scratch, Grille grille, int taille) {
+        for (int i = 0; i < grille.getNbColonne(); i++) {
+            for (int j = 0; j < grille.getNbLigne(); j++) {
+                Matrix.translateM(mModelMatrix, 0, (i * (taille * 2)),  (j * (taille * 2)) , 0);
+                Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
+
+                if (grille.getGrilleStatique().get(j).get(i) != 0){
+                    new Square(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),grille.getGrilleStatique().get(j).get(i))-1, taille).draw(scratch);
+                }
+
+                mModelMatrix = setOrigin(mModelMatrix,taille);
+            }
+        }
+    }
+
+    public Boolean drawGrilleDynamique(float[] scratch, Grille grille, int taille) {
+        for (int i = 0; i < grille.getNbColonne(); i++) {
+            for (int j = 0; j < grille.getNbLigne(); j++) {
+                Matrix.translateM(mModelMatrix, 0, (i * (taille * 2)),  (j * (taille * 2)) , 0);
+                Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
+
+                if (grille.getGrilleDynamique().get(j).get(i) != 0){
+                    new Square(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),grille.getGrilleStatique().get(j).get(i))-1, taille).draw(scratch);
+                }
+
+                mModelMatrix = setOrigin(mModelMatrix,taille);
+            }
+        }
+
+        return grille.testCollision(grille.getGrilleVide());
     }
 
     /* équivalent au Reshape en OpenGLSL */
@@ -206,15 +252,17 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         ArrayList<String> tt = new ArrayList<String>();
         tt.add("I");
-        tt.add("O");
+        /*tt.add("O");
         tt.add("T");
         tt.add("L");
-        tt.add("J");
+        tt.add("J");*/
         Random rand = new Random();
-
 
         grille.addForme(new Tetromino(tt.get(rand.nextInt(tt.size()))));
     }
+
+
+
 
     public void d(){
         grille.gauche();

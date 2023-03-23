@@ -67,7 +67,6 @@ public class Grille {
                 end = true;
             }
         }
-        //System.out.println("dyn :" + grilleDynamique);
         if (!end) {
             for (int i = 1; i < nbLigne; i++) {
                 for (int j = 0; j < nbColonne; j++) {
@@ -77,7 +76,6 @@ public class Grille {
 
             if (testCollision(tmp)) {
                 recopieDynamiqueVersStatique();
-                System.out.println("collision");
             } else {
                 this.grilleDynamique = clone(tmp);
             }
@@ -85,10 +83,6 @@ public class Grille {
         else {
             recopieDynamiqueVersStatique();
         }
-        //System.out.println("tmp :" + tmp);
-
-        //System.out.println("vide :" + grilleVide);
-
     }
 
 
@@ -97,8 +91,9 @@ public class Grille {
         //System.out.println(tmp);
         boolean end = false;
         for (int i = 0; i < nbLigne; i++) {
-            if (grilleDynamique.get(i).get(nbColonne-1)!=0){
+            if (grilleDynamique.get(i).get(nbColonne - 1) != 0) {
                 end = true;
+                break;
             }
         }
         //System.out.println("dyn :" + grilleDynamique);
@@ -115,23 +110,17 @@ public class Grille {
                 this.grilleDynamique = clone(tmp);
             }
         }
-        //System.out.println("tmp :" + tmp);
-
-        //System.out.println("vide :" + grilleVide);
-
     }
 
 
     public void gauche(){
         ArrayList<ArrayList<Integer>> tmp = clone(grilleVide);
-        //System.out.println(tmp);
         boolean end = false;
         for (int i = 0; i < nbLigne; i++) {
             if (grilleDynamique.get(i).get(0)!=0){
                 end = true;
             }
         }
-        //System.out.println("dyn :" + grilleDynamique);
         if (!end) {
             for (int i = 0; i < nbLigne; i++) {
                 for (int j = 1; j < nbColonne; j++) {
@@ -145,12 +134,13 @@ public class Grille {
                 this.grilleDynamique = clone(tmp);
             }
         }
-        //System.out.println("tmp :" + tmp);
 
-        //System.out.println("vide :" + grilleVide);
 
     }
 
+    public ArrayList<ArrayList<Integer>> getGrilleVide() {
+        return grilleVide;
+    }
 
     public void recopieDynamiqueVersStatique() {
         for (int i = 0; i < nbLigne; i++)
@@ -159,32 +149,39 @@ public class Grille {
                     grilleStatique.get(i).set(j, grilleDynamique.get(i).get(j));
                 }
         grilleDynamique = clone(grilleVide);
-
-
     }
 
     public Boolean testCollision(ArrayList<ArrayList<Integer>> tmp) {
         for (int i = 0; i < nbLigne; i++)
             for (int j = 0 ; j < nbColonne; j++){
-                /*if (i == 0 && tmp.get(i).get(j) != 0){
-                    //recopieDynamiqueVersStatique();
-                    //grilleDynamique = new ArrayList<>(grilleVide);
-                    return true;
-                }
-                else{
-                    if (tmp.get(i).get(j) != 0 && grilleStatique.get(i-1).get(j) >= 1) {
-                        //recopieDynamiqueVersStatique();
-                        //grilleDynamique = new ArrayList<>(grilleVide);
-                        return true;
-                    }*/
-
                 if (tmp.get(i).get(j) != 0 && grilleStatique.get(i).get(j) >= 1) {
-                    //recopieDynamiqueVersStatique();
-                    //grilleDynamique = new ArrayList<>(grilleVide);
                     return true;
                 }
             }
 
+        return false;
+    }
+
+    public Boolean testLigneComplete() {
+        int cpt = 0;
+        for (int i = 0; i < nbLigne; i++)
+            for (int j = 0 ; j < nbColonne; j++){
+                if (grilleStatique.get(i).get(j) != 0) {
+                    cpt++;
+                    if (cpt == nbColonne - 1)
+                    {
+                        grilleStatique.remove(i);
+                        ArrayList<Integer> l = this.grilleDynamique.get(nbLigne - 3);
+                        grilleStatique.add(nbLigne - 1, l);
+
+                        return true;
+                    }
+                }
+                else {
+                    cpt = 0;
+                    break;
+                }
+            }
 
         return false;
     }
