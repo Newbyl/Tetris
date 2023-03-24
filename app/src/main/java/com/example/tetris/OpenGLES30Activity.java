@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -40,10 +41,26 @@ public class OpenGLES30Activity extends Activity   {
 
         setContentView(mGLView);
 
-        mGLView.grille.gauche();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Log.i("TEST", "Thread Name 1: " + Thread.currentThread().getName());
+                while (true) {
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    synchronized (mGLView) {
+                        mGLView.anim();
+                    }
+                }
 
+            }
+        };
 
-
+        Thread thread = new Thread(runnable);
+        thread.start();
 
     }
 

@@ -124,13 +124,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         }
         */
 
-        if (frame == 4){
+        /*if (frame == 4){
             frame = 0;
             this.grille.test();
             this.grille.testLigneComplete();
         }
 
-        frame++;
+        frame++;*/
 
         if (grille.estVide()){
             aforme();
@@ -166,9 +166,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         drawGrilleDynamique(scratch, grille, taille);
         drawGrilleStatique(scratch2, grille, taille);
-
-
-
     }
 
 
@@ -261,7 +258,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         grille.addForme(new Tetromino(tt.get(rand.nextInt(tt.size()))));
     }
 
-
+    public void anima(){
+        this.grille.test();
+        this.grille.testLigneComplete();
+    }
 
 
     public void d(){

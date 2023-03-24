@@ -56,7 +56,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         setRenderer(mRenderer);
 
         // Option pour indiquer qu'on redessine uniquement si les données changent
-        //setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
     }
 
@@ -140,5 +140,11 @@ public class MyGLSurfaceView extends GLSurfaceView {
         }
         requestRender();
         return true;
+    }
+
+
+    public void anim(){
+        mRenderer.anima();
+        requestRender();
     }
 }
