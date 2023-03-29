@@ -18,6 +18,7 @@ package com.example.tetris;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -58,6 +59,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     }
 
+
+    double totalTime;
+    double totalFrames;
+
+
     /* Deuxième méthode équivalente à la fonction Display */
     @Override
     public void onDrawFrame(GL10 unused) {
@@ -93,79 +99,21 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         //mSquare.draw(scratch);
 
 
-        /*
-        for (int i = 0; i < 7; i++) {
-            Matrix.translateM(mModelMatrix, 0, mSquarePosition[0], mSquarePosition[1] + (i * (taille * 2)) , 0);
-            Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
-
-            new Square(mSquarePosition, i, taille).draw(scratch);
-            Matrix.setIdentityM(mModelMatrix,0);
-
-        }*/
-        /*
-        if (frame == 2){
-            frame = 0;
-            this.grille.test();
-        }
-
-        frame++;
-        */
-
-        /*
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 7; j++) {
-                Matrix.translateM(mModelMatrix, 0, (i * (taille * 2)),  (j * (taille * 2)) , 0);
-                Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
-                if (grille.get(i,j) != 1){
-                    new Square(mSquarePosition, i%6, taille).draw(scratch);
-                }
-                mModelMatrix = setOrigin(mModelMatrix,taille);
-            }
-        }
-        */
-
-        /*if (frame == 4){
-            frame = 0;
-            this.grille.test();
-            this.grille.testLigneComplete();
-        }
-
-        frame++;*/
 
         if (grille.estVide()){
             aforme();
         }
 
-        /*
-        if (SystemClock.uptimeMillis() % 4L == 0)
-        {
-            this.grille.test();
-        }
 
+        long start = System.nanoTime();
+        drawGrille(scratch2, grille, taille);
 
-        if (grille.estVide()){
-            aforme();
-        }
-        */
+        long stop = System.nanoTime();
 
-        /*
-        for (int i = 0; i < grille.getNbColonne(); i++) {
-            for (int j = 0; j < grille.getNbLigne(); j++) {
-                Matrix.translateM(mModelMatrix, 0, (i * (taille * 2)),  (j * (taille * 2)) , 0);
-                Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
+        this.totalTime += stop - start;
+        this.totalFrames++;
 
-                if (grille.getGrilleDynamique().get(j).get(i) != 0 || grille.getGrilleStatique().get(j).get(i) != 0){
-                    new Square(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),grille.getGrilleStatique().get(j).get(i))-1, taille).draw(scratch);
-                }
-                else {
-                    //new Square(mSquarePosition, 7, taille).draw(scratch);
-                }
-                mModelMatrix = setOrigin(mModelMatrix,taille);
-            }
-        }*/
-
-        drawGrilleDynamique(scratch, grille, taille);
-        drawGrilleStatique(scratch2, grille, taille);
+        Log.d("TEST", (this.totalTime / this.totalFrames) / 1000000 + " ms");
     }
 
 
@@ -177,36 +125,19 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         return mModelMatrix;
     }
 
-    public void drawGrilleStatique(float[] scratch, Grille grille, int taille) {
+    public void drawGrille(float[] scratch, Grille grille, int taille) {
         for (int i = 0; i < grille.getNbColonne(); i++) {
             for (int j = 0; j < grille.getNbLigne(); j++) {
                 Matrix.translateM(mModelMatrix, 0, (i * (taille * 2)),  (j * (taille * 2)) , 0);
                 Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
 
-                if (grille.getGrilleStatique().get(j).get(i) != 0){
+                if (grille.getGrilleStatique().get(j).get(i) != 0 || grille.getGrilleDynamique().get(j).get(i) != 0){
                     new Square(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),grille.getGrilleStatique().get(j).get(i))-1, taille).draw(scratch);
                 }
 
                 mModelMatrix = setOrigin(mModelMatrix,taille);
             }
         }
-    }
-
-    public Boolean drawGrilleDynamique(float[] scratch, Grille grille, int taille) {
-        for (int i = 0; i < grille.getNbColonne(); i++) {
-            for (int j = 0; j < grille.getNbLigne(); j++) {
-                Matrix.translateM(mModelMatrix, 0, (i * (taille * 2)),  (j * (taille * 2)) , 0);
-                Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
-
-                if (grille.getGrilleDynamique().get(j).get(i) != 0){
-                    new Square(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),grille.getGrilleStatique().get(j).get(i))-1, taille).draw(scratch);
-                }
-
-                mModelMatrix = setOrigin(mModelMatrix,taille);
-            }
-        }
-
-        return grille.testCollision(grille.getGrilleVide());
     }
 
     /* équivalent au Reshape en OpenGLSL */
@@ -246,11 +177,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     public void aforme(){
-
         ArrayList<String> tt = new ArrayList<String>();
-        tt.add("I");
-        /*tt.add("O");
-        tt.add("T");
+        //tt.add("I");
+        tt.add("O");
+        /*tt.add("T");
         tt.add("L");
         tt.add("J");*/
         Random rand = new Random();
@@ -260,13 +190,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     public void anima(){
         this.grille.test();
-        this.grille.testLigneComplete();
+        //this.grille.testLigneComplete();
     }
 
-
-    public void d(){
-        grille.gauche();
-    }
     public float[] getPosition() {
         return mSquarePosition;
     }

@@ -15,13 +15,12 @@
  */
 package com.example.tetris;
 
+import android.opengl.GLES30;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
-
-//import android.opengl.GLES20;
-import android.opengl.GLES30;
 
 
 //Dessiner un carré
@@ -229,6 +228,7 @@ public class Square {
         Position[0]=pos[0];
         Position[1]=pos[1];
     }
+
     /* La fonction Display */
     public void draw(float[] mvpMatrix) {
         // Add program to OpenGL environment

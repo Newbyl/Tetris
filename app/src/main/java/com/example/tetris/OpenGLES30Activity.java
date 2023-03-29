@@ -1,16 +1,11 @@
 package com.example.tetris;
 
 
-
-import android.os.Bundle;
-
 import android.app.Activity;
-import android.opengl.GLSurfaceView;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
-
-import androidx.annotation.Nullable;
 
 /* Ce tutorial est issu d'un tutorial http://developer.android.com/training/graphics/opengl/index.html :
 openGLES.zip HelloOpenGLES20
@@ -47,7 +42,7 @@ public class OpenGLES30Activity extends Activity   {
                 Log.i("TEST", "Thread Name 1: " + Thread.currentThread().getName());
                 while (true) {
                     try {
-                        Thread.sleep(300);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

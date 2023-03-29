@@ -63,8 +63,9 @@ public class Grille {
         //System.out.println(tmp);
         boolean end = false;
         for (int i = 0; i < nbColonne; i++) {
-            if (grilleDynamique.get(0).get(i)!=0){
+            if (grilleDynamique.get(0).get(i) != 0) {
                 end = true;
+                break;
             }
         }
         if (!end) {
@@ -96,7 +97,6 @@ public class Grille {
                 break;
             }
         }
-        //System.out.println("dyn :" + grilleDynamique);
         if (!end) {
             for (int i = 0; i < nbLigne; i++) {
                 for (int j = nbColonne-2; j >= 0; j--) {
@@ -104,9 +104,7 @@ public class Grille {
                 }
             }
 
-            if (testCollision(tmp)) {
-
-            } else {
+            if (!testCollision(tmp)) {
                 this.grilleDynamique = clone(tmp);
             }
         }
@@ -128,9 +126,7 @@ public class Grille {
                 }
             }
 
-            if (testCollision(tmp)) {
-
-            } else {
+            if (!testCollision(tmp)) {
                 this.grilleDynamique = clone(tmp);
             }
         }
@@ -168,10 +164,10 @@ public class Grille {
             for (int j = 0 ; j < nbColonne; j++){
                 if (grilleStatique.get(i).get(j) != 0) {
                     cpt++;
-                    if (cpt == nbColonne - 1)
+                    if (cpt == nbColonne)
                     {
                         grilleStatique.remove(i);
-                        ArrayList<Integer> l = this.grilleDynamique.get(nbLigne - 3);
+                        ArrayList<Integer> l = this.grilleDynamique.get(nbLigne - 4);
                         grilleStatique.add(nbLigne - 1, l);
 
                         return true;
@@ -214,7 +210,6 @@ public class Grille {
 
 
     public Boolean estVide(){
-
         for (int i = 0; i < nbLigne; i++) {
             for (int j = 0; j < nbColonne; j++) {
                 if (grilleDynamique.get(i).get(j)!=0){

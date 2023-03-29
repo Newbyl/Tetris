@@ -47,7 +47,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         // Création du renderer qui va être lié au conteneur View créé
         mRenderer = new MyGLRenderer();
 
-        Tetromino tetromino = new Tetromino("I");
+        Tetromino tetromino = new Tetromino("O");
 
         grille.addForme(tetromino);
 
