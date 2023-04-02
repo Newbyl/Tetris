@@ -55,7 +55,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES30.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         /* on va définir une classe Square pour dessiner des carrés */
-        mSquare = new Square(mSquarePosition, 0, 50);
+        //mSquare = new Square(mSquarePosition, 0, 50);
 
     }
 
@@ -87,6 +87,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         mModelMatrix = setOrigin(mModelMatrix,taille);
 
+
         /* Pour définir une translation on donne les paramètres de la translation
         et la matrice (ici mModelMatrix) est multipliée par la translation correspondante
          */
@@ -104,9 +105,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             aforme();
         }
 
-
         long start = System.nanoTime();
-        drawGrille(scratch2, grille, taille);
+        //drawGrille(scratch2, grille, taille);
+        drawGrilleOpt(scratch2, grille, taille);
 
         long stop = System.nanoTime();
 
@@ -128,8 +129,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     public void drawGrille(float[] scratch, Grille grille, int taille) {
         for (int i = 0; i < grille.getNbColonne(); i++) {
             for (int j = 0; j < grille.getNbLigne(); j++) {
-                Matrix.translateM(mModelMatrix, 0, (i * (taille * 2)),  (j * (taille * 2)) , 0);
+                //Matrix.translateM(mModelMatrix, 0, (i * (taille * 2)),  (j * (taille * 2)) , 0);
                 Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
+                mSquarePosition[0] = (i * (taille * 2));
+                mSquarePosition[1] = (j * (taille * 2));
 
                 if (grille.getGrilleStatique().get(j).get(i) != 0 || grille.getGrilleDynamique().get(j).get(i) != 0){
                     new Square(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),grille.getGrilleStatique().get(j).get(i))-1, taille).draw(scratch);
@@ -139,6 +142,33 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             }
         }
     }
+
+
+    public void drawGrilleOpt(float[] scratch, Grille grille, int taille) {
+        ArrayList<Square> listSquare = new ArrayList<>();
+
+        for (int i = 0; i < grille.getNbColonne(); i++) {
+            for (int j = 0; j < grille.getNbLigne(); j++) {
+                //Matrix.translateM(mModelMatrix, 0, (i * (taille * 2)),  (j * (taille * 2)) , 0);
+                Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
+                mSquarePosition[0] = (i * (taille * 2));
+                mSquarePosition[1] = (j * (taille * 2));
+
+                if (grille.getGrilleStatique().get(j).get(i) != 0 || grille.getGrilleDynamique().get(j).get(i) != 0){
+                    listSquare.add(
+                        new Square(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),grille.getGrilleStatique().get(j).get(i))-1, taille)
+                    );
+                }
+
+
+                mModelMatrix = setOrigin(mModelMatrix,taille);
+            }
+        }
+
+        if (!listSquare.isEmpty())
+            new Batch(listSquare).draw(scratch);
+    }
+
 
     /* équivalent au Reshape en OpenGLSL */
     @Override

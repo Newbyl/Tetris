@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2011 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.example.tetris;
 
 import android.opengl.GLES30;
@@ -21,38 +6,34 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
+import java.util.ArrayList;
 
-
-//Dessiner un carré
-
-public class Square {
-/* Le vertex shader avec la définition de gl_Position et les variables utiles au fragment shader
- */
+public class Batch {
     private final String vertexShaderCode =
-        "#version 300 es\n"+
-                "uniform mat4 uMVPMatrix;\n"+
-            "in vec3 vPosition;\n" +
-                "in vec4 vCouleur;\n"+
-                "out vec4 Couleur;\n"+
-                "out vec3 Position;\n"+
-            "void main() {\n" +
-                "Position = vPosition;\n"+
-                "gl_Position = uMVPMatrix * vec4(vPosition,1.0);\n" +
-                "Couleur = vCouleur;\n"+
-            "}\n";
+            "#version 300 es\n"+
+                    "uniform mat4 uMVPMatrix;\n"+
+                    "in vec3 vPosition;\n" +
+                    "in vec4 vCouleur;\n"+
+                    "out vec4 Couleur;\n"+
+                    "out vec3 Position;\n"+
+                    "void main() {\n" +
+                    "Position = vPosition;\n"+
+                    "gl_Position = uMVPMatrix * vec4(vPosition,1.0);\n" +
+                    "Couleur = vCouleur;\n"+
+                    "}\n";
 
     private final String fragmentShaderCode =
             "#version 300 es\n"+
-            "precision mediump float;\n" + // pour définir la taille d'un float
-            "in vec4 Couleur;\n"+
-            "in vec3 Position;\n"+
-            "out vec4 fragColor;\n"+
-            "void main() {\n" +
-            "float x = Position.x;\n"+
-            "float y = Position.y;\n"+
-            "float test = x*x+y*y;\n"+
-            "fragColor = Couleur;\n" +
-            "}\n";
+                    "precision mediump float;\n" + // pour définir la taille d'un float
+                    "in vec4 Couleur;\n"+
+                    "in vec3 Position;\n"+
+                    "out vec4 fragColor;\n"+
+                    "void main() {\n" +
+                    "float x = Position.x;\n"+
+                    "float y = Position.y;\n"+
+                    "float test = x*x+y*y;\n"+
+                    "fragColor = Couleur;\n" +
+                    "}\n";
 
     /* les déclarations pour l'équivalent des VBO */
 
@@ -71,37 +52,12 @@ public class Square {
     static final int COORDS_PER_VERTEX = 3; // nombre de coordonnées par vertex
     static final int COULEURS_PER_VERTEX = 4; // nombre de composantes couleur par vertex
 
-    int[] linkStatus = {0};
-
-    float X;
-
-    /* Attention au repère au niveau écran (x est inversé)
-     Le tableau des coordonnées des sommets
-     Oui ce n'est pas joli avec 1.0 en dur ....
-     */
-
-    public FloatBuffer getColorBuffer() {
-        return colorBuffer;
-    }
-
-    public FloatBuffer getVertexBuffer() {
-        return vertexBuffer;
-    }
-
-    public ShortBuffer getIndiceBuffer() {
-        return indiceBuffer;
-    }
-
-    public float[] getSquareCoords() {
-        return squareCoords;
-    }
-
     // Le tableau des couleurs
     static float[] tetraminoI = {
-             .0f,  1.0f, 1.0f, 1.0f,
-             .0f,  1.0f, 1.0f, 1.0f,
-             .0f,  1.0f, 1.0f, 1.0f,
-             .0f,  1.0f, 1.0f, 1.0f };
+            .0f,  1.0f, 1.0f, 1.0f,
+            .0f,  1.0f, 1.0f, 1.0f,
+            .0f,  1.0f, 1.0f, 1.0f,
+            .0f,  1.0f, 1.0f, 1.0f };
 
     static float[] tetraminoO = {
             1.0f,  1.0f, 0.0f, 1.0f,
@@ -139,98 +95,87 @@ public class Square {
             0.0f,  1.0f, 0.0f, 1.0f,
             0.0f,  1.0f, 0.0f, 1.0f };
 
-
-
-
     static float[] squareColors = {
-             1.0f,  0.0f, 0.0f, 1.0f,
-             1.0f,  1.0f, 1.0f, 1.0f,
-             0.0f,  1.0f, 0.0f, 1.0f,
-             0.0f,  0.0f, 1.0f, 1.0f };
+            1.0f,  0.0f, 0.0f, 1.0f,
+            1.0f,  1.0f, 1.0f, 1.0f,
+            0.0f,  1.0f, 0.0f, 1.0f,
+            0.0f,  0.0f, 1.0f, 1.0f };
 
+    private final short[] Indices = { 0, 1, 2, 0, 2, 3 };
 
-    // Le carré est dessiné avec 2 triangles
-    private final short Indices[] = { 0, 1, 2, 0, 2, 3 };
+    int[] linkStatus = {0};
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // le pas entre 2 sommets : 4 bytes per vertex
 
     private final int couleurStride = COULEURS_PER_VERTEX * 4; // le pas entre 2 couleurs
 
-    private final float Position[] = {0.0f,0.0f};
+    private int nbCarre;
 
-    float squareCoords[];
 
-    private int typeT;
-
-    public int getTypeT() {
-        return typeT;
-    }
-
-    public Square(float[] Pos, int type, float taille) {
-
-        X = taille;
-
-        typeT = type;
-
-        Position[0] = Pos[0];
-        Position[1] = Pos[1];
-
-        squareCoords = new float[]{
-                -X + Position[0], X + Position[1], 0.0f,
-                -X + Position[0], -X + Position[1], 0.0f,
-                X + Position[0], -X + Position[1], 0.0f,
-                X + Position[0], X + Position[1], 0.0f};
-
+    public Batch(ArrayList<Square> listeCarre) {
+        nbCarre = listeCarre.size();
 
         // initialisation du buffer pour les vertex (4 bytes par float)
-        ByteBuffer bb = ByteBuffer.allocateDirect(squareCoords.length * 4);
+        ByteBuffer bb = ByteBuffer.allocateDirect(listeCarre.size() * listeCarre.get(0).getSquareCoords().length * 4);
         bb.order(ByteOrder.nativeOrder());
         vertexBuffer = bb.asFloatBuffer();
-        vertexBuffer.put(squareCoords);
-        vertexBuffer.position(0);
-
 
         // initialisation du buffer pour les couleurs (4 bytes par float)
-        ByteBuffer bc = ByteBuffer.allocateDirect(tetraminoI.length * 4);
+        ByteBuffer bc = ByteBuffer.allocateDirect(listeCarre.size() * tetraminoI.length * 4);
         bc.order(ByteOrder.nativeOrder());
         colorBuffer = bc.asFloatBuffer();
 
-
-        switch (type){
-            case 0:
-                colorBuffer.put(tetraminoI);
-                break;
-            case 1:
-                colorBuffer.put(tetraminoO);
-                break;
-            case 2:
-                colorBuffer.put(tetraminoT);
-                break;
-            case 3:
-                colorBuffer.put(tetraminoL);
-                break;
-            case 4:
-                colorBuffer.put(tetraminoJ);
-                break;
-            case 5:
-                colorBuffer.put(tetraminoZ);
-                break;
-            case 6:
-                colorBuffer.put(tetraminoS);
-                break;
-            case 7:
-                colorBuffer.put(squareColors);
-                break;
-        }
-
-        colorBuffer.position(0);
-
         // initialisation du buffer des indices
-        ByteBuffer dlb = ByteBuffer.allocateDirect(Indices.length * 2);
+        ByteBuffer dlb = ByteBuffer.allocateDirect(listeCarre.size() * Indices.length * 2);
         dlb.order(ByteOrder.nativeOrder());
         indiceBuffer = dlb.asShortBuffer();
-        indiceBuffer.put(Indices);
-        indiceBuffer.position(0);
+
+        int posVer = 0;
+        int posCol = 0;
+        int posInd = 0;
+
+        for (Square s : listeCarre) {
+            vertexBuffer.put(s.getSquareCoords());
+            vertexBuffer.position(0);
+
+            switch (s.getTypeT()){
+                case 0:
+                    colorBuffer.put(tetraminoI);
+                    break;
+                case 1:
+                    colorBuffer.put(tetraminoO);
+                    break;
+                case 2:
+                    colorBuffer.put(tetraminoT);
+                    break;
+                case 3:
+                    colorBuffer.put(tetraminoL);
+                    break;
+                case 4:
+                    colorBuffer.put(tetraminoJ);
+                    break;
+                case 5:
+                    colorBuffer.put(tetraminoZ);
+                    break;
+                case 6:
+                    colorBuffer.put(tetraminoS);
+                    break;
+                case 7:
+                    colorBuffer.put(squareColors);
+                    break;
+            }
+
+            colorBuffer.position(0);
+
+            indiceBuffer.put(Indices);
+            indiceBuffer.position(0);
+
+            posVer = posVer + s.getSquareCoords().length * 4;
+            posCol = posCol + tetraminoI.length * 4;
+            posInd = posInd + Indices.length * 2;
+
+
+        }
 
         /* Chargement des shaders */
         int vertexShader = MyGLRenderer.loadShader(
@@ -245,19 +190,7 @@ public class Square {
         GLES30.glAttachShader(IdProgram, fragmentShader); // add the fragment shader to program
         GLES30.glLinkProgram(IdProgram);                  // create OpenGL program executables
         GLES30.glGetProgramiv(IdProgram, GLES30.GL_LINK_STATUS,linkStatus,0);
-
-
     }
-
-    //
-
-
-
-    public void set_position(float[] pos) {
-        Position[0]=pos[0];
-        Position[1]=pos[1];
-    }
-
 
 
     /* La fonction Display */
@@ -294,7 +227,7 @@ public class Square {
 
         // Draw the square
         GLES30.glDrawElements(
-                GLES30.GL_TRIANGLES, Indices.length,
+                GLES30.GL_TRIANGLES, Indices.length * nbCarre,
                 GLES30.GL_UNSIGNED_SHORT, indiceBuffer);
 
 
@@ -303,5 +236,4 @@ public class Square {
         GLES30.glDisableVertexAttribArray(IdCouleur);
 
     }
-
 }
