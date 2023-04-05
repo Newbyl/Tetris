@@ -18,7 +18,6 @@ package com.example.tetris;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
-import android.util.Log;
 import android.view.MotionEvent;
 
 
@@ -37,6 +36,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
     private final MyGLRenderer mRenderer;
     public Grille grille = new Grille(20,10);
+
+    private Boolean mutex = true;
 
     public MyGLSurfaceView(Context context) {
         super(context);
@@ -87,24 +88,40 @@ public class MyGLSurfaceView extends GLSurfaceView {
                 if ((mPreviousX < e.getX()) && ((mPreviousX - e.getX() > 50) || (mPreviousX - e.getX() < -50)))
                 {
                     grille.droit();
-                    requestRender();
+
+                    if (mutex) {
+                        mutex = false;
+                        requestRender();
+                        mutex = true;
+                        return true;
+                    }
+
                     return true;
                 }
                 // J'ai mis les borne pour eviter de deplacer si on drag pas assez
                 else if ((mPreviousX > e.getX()) && ((mPreviousX - e.getX() > 50) || (mPreviousX - e.getX() < -50)))
                 {
                     grille.gauche();
-                    requestRender();
+
+                    if (mutex) {
+                        mutex = false;
+                        requestRender();
+                        mutex = true;
+                        return true;
+                    }
                     return true;
                 }
         }
-        requestRender();
         return true;
     }
 
 
     public void anim(){
         mRenderer.anima();
-        requestRender();
+        if (mutex) {
+            mutex = false;
+            requestRender();
+            mutex = true;
+        }
     }
 }

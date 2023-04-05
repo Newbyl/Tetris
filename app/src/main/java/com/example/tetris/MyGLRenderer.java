@@ -212,11 +212,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     public void aforme(){
         ArrayList<String> tt = new ArrayList<String>();
-        //tt.add("I");
+        tt.add("I");
         tt.add("O");
-        /*tt.add("T");
+        tt.add("T");
         tt.add("L");
-        tt.add("J");*/
+        tt.add("J");
         Random rand = new Random();
 
         grille.addForme(new Tetromino(tt.get(rand.nextInt(tt.size()))));

@@ -3,7 +3,6 @@ package com.example.tetris;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -39,10 +38,9 @@ public class OpenGLES30Activity extends Activity   {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                Log.i("TEST", "Thread Name 1: " + Thread.currentThread().getName());
                 while (true) {
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(400);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

@@ -272,6 +272,9 @@ public class Square {
         GLES30.glUniformMatrix4fv(IdMVPMatrix, 1, false, mvpMatrix, 0);
 
 
+
+
+
         // get handle to vertex shader's vPosition member et vCouleur member
         IdPosition = GLES30.glGetAttribLocation(IdProgram, "vPosition");
         IdCouleur = GLES30.glGetAttribLocation(IdProgram, "vCouleur");
