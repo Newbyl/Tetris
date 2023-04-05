@@ -181,7 +181,6 @@ public class Batch {
         }
         indiceBuffer.position(0);
         vertexBuffer.position(0);
-        //colorBuffer.put(squareColors);
         colorBuffer.position(0);
         /* Chargement des shaders */
         int vertexShader = MyGLRenderer.loadShader(

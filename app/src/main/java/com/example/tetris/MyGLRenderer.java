@@ -135,7 +135,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 mSquarePosition[1] = (j * (taille * 2));
 
                 if (grille.getGrilleStatique().get(j).get(i) != 0 || grille.getGrilleDynamique().get(j).get(i) != 0){
-                    new Square(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),grille.getGrilleStatique().get(j).get(i))-1, taille).draw(scratch);
+                    new Square(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),grille.getGrilleStatique().get(j).get(i))-1, taille);
                 }
                 else{
 
@@ -161,6 +161,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 if (grille.getGrilleStatique().get(j).get(i) != 0 || grille.getGrilleDynamique().get(j).get(i) != 0){
                     listSquare.add(
                         new Square(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),grille.getGrilleStatique().get(j).get(i))-1, taille)
+                    );
+                }
+                else {
+                    listSquare.add(
+                            new Square(mSquarePosition,7, taille)
                     );
                 }
 

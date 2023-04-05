@@ -18,6 +18,7 @@ package com.example.tetris;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 
@@ -38,6 +39,27 @@ public class MyGLSurfaceView extends GLSurfaceView {
     public Grille grille = new Grille(20,10);
 
     private Boolean mutex = true;
+    public MyGLSurfaceView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+        // Création d'un context OpenGLES 3.0
+        setEGLContextClientVersion(3);
+
+        // Création du renderer qui va être lié au conteneur View créé
+        mRenderer = new MyGLRenderer();
+
+        Tetromino tetromino = new Tetromino("O");
+
+        grille.addForme(tetromino);
+
+
+        mRenderer.setGrille(grille);
+        setRenderer(mRenderer);
+
+        // Option pour indiquer qu'on redessine uniquement si les données changent
+        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+
+    }
 
     public MyGLSurfaceView(Context context) {
         super(context);
@@ -124,4 +146,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
             mutex = true;
         }
     }
+
+
+
 }

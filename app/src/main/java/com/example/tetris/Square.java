@@ -56,14 +56,14 @@ public class Square {
 
     /* les déclarations pour l'équivalent des VBO */
 
-    private final FloatBuffer vertexBuffer; // Pour le buffer des coordonnées des sommets du carré
-    private final ShortBuffer indiceBuffer; // Pour le buffer des indices
-    private final FloatBuffer colorBuffer; // Pour le buffer des couleurs des sommets
+ // Pour le buffer des coordonnées des sommets du carré
+ // Pour le buffer des indices
+// Pour le buffer des couleurs des sommets
 
     /* les déclarations pour les shaders
     Identifiant du programme et pour les variables attribute ou uniform
      */
-    private final int IdProgram; // identifiant du programme pour lier les shaders
+// identifiant du programme pour lier les shaders
     private int IdPosition; // idendifiant (location) pour transmettre les coordonnées au vertex shader
     private int IdCouleur; // identifiant (location) pour transmettre les couleurs
     private int IdMVPMatrix; // identifiant (location) pour transmettre la matrice PxVxM
@@ -80,17 +80,7 @@ public class Square {
      Oui ce n'est pas joli avec 1.0 en dur ....
      */
 
-    public FloatBuffer getColorBuffer() {
-        return colorBuffer;
-    }
 
-    public FloatBuffer getVertexBuffer() {
-        return vertexBuffer;
-    }
-
-    public ShortBuffer getIndiceBuffer() {
-        return indiceBuffer;
-    }
 
     public float[] getSquareCoords() {
         return squareCoords;
@@ -182,70 +172,6 @@ public class Square {
                 X + Position[0], X + Position[1], 0.0f};
 
 
-        // initialisation du buffer pour les vertex (4 bytes par float)
-        ByteBuffer bb = ByteBuffer.allocateDirect(squareCoords.length * 4);
-        bb.order(ByteOrder.nativeOrder());
-        vertexBuffer = bb.asFloatBuffer();
-        vertexBuffer.put(squareCoords);
-        vertexBuffer.position(0);
-
-
-        // initialisation du buffer pour les couleurs (4 bytes par float)
-        ByteBuffer bc = ByteBuffer.allocateDirect(tetraminoI.length * 4);
-        bc.order(ByteOrder.nativeOrder());
-        colorBuffer = bc.asFloatBuffer();
-
-
-        switch (type){
-            case 0:
-                colorBuffer.put(tetraminoI);
-                break;
-            case 1:
-                colorBuffer.put(tetraminoO);
-                break;
-            case 2:
-                colorBuffer.put(tetraminoT);
-                break;
-            case 3:
-                colorBuffer.put(tetraminoL);
-                break;
-            case 4:
-                colorBuffer.put(tetraminoJ);
-                break;
-            case 5:
-                colorBuffer.put(tetraminoZ);
-                break;
-            case 6:
-                colorBuffer.put(tetraminoS);
-                break;
-            case 7:
-                colorBuffer.put(squareColors);
-                break;
-        }
-
-        colorBuffer.position(0);
-
-        // initialisation du buffer des indices
-        ByteBuffer dlb = ByteBuffer.allocateDirect(Indices.length * 2);
-        dlb.order(ByteOrder.nativeOrder());
-        indiceBuffer = dlb.asShortBuffer();
-        indiceBuffer.put(Indices);
-        indiceBuffer.position(0);
-
-        /* Chargement des shaders */
-        int vertexShader = MyGLRenderer.loadShader(
-                GLES30.GL_VERTEX_SHADER,
-                vertexShaderCode);
-        int fragmentShader = MyGLRenderer.loadShader(
-                GLES30.GL_FRAGMENT_SHADER,
-                fragmentShaderCode);
-
-        IdProgram = GLES30.glCreateProgram();             // create empty OpenGL Program
-        GLES30.glAttachShader(IdProgram, vertexShader);   // add the vertex shader to program
-        GLES30.glAttachShader(IdProgram, fragmentShader); // add the fragment shader to program
-        GLES30.glLinkProgram(IdProgram);                  // create OpenGL program executables
-        GLES30.glGetProgramiv(IdProgram, GLES30.GL_LINK_STATUS,linkStatus,0);
-
 
     }
 
@@ -260,51 +186,6 @@ public class Square {
 
 
 
-    /* La fonction Display */
-    public void draw(float[] mvpMatrix) {
-        // Add program to OpenGL environment
-        GLES30.glUseProgram(IdProgram);
 
-        // get handle to shape's transformation matrix
-        IdMVPMatrix = GLES30.glGetUniformLocation(IdProgram, "uMVPMatrix");
-
-        // Apply the projection and view transformation
-        GLES30.glUniformMatrix4fv(IdMVPMatrix, 1, false, mvpMatrix, 0);
-
-
-
-
-
-        // get handle to vertex shader's vPosition member et vCouleur member
-        IdPosition = GLES30.glGetAttribLocation(IdProgram, "vPosition");
-        IdCouleur = GLES30.glGetAttribLocation(IdProgram, "vCouleur");
-
-        /* Activation des Buffers */
-        GLES30.glEnableVertexAttribArray(IdPosition);
-        GLES30.glEnableVertexAttribArray(IdCouleur);
-
-        /* Lecture des Buffers */
-        GLES30.glVertexAttribPointer(
-                IdPosition, COORDS_PER_VERTEX,
-                GLES30.GL_FLOAT, false,
-                vertexStride, vertexBuffer);
-
-        GLES30.glVertexAttribPointer(
-                IdCouleur, COULEURS_PER_VERTEX,
-                GLES30.GL_FLOAT, false,
-                couleurStride, colorBuffer);
-
-
-        // Draw the square
-        GLES30.glDrawElements(
-                GLES30.GL_TRIANGLES, Indices.length,
-                GLES30.GL_UNSIGNED_SHORT, indiceBuffer);
-
-
-        // Disable vertex array
-        GLES30.glDisableVertexAttribArray(IdPosition);
-        GLES30.glDisableVertexAttribArray(IdCouleur);
-
-    }
 
 }
