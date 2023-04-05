@@ -130,13 +130,13 @@ public class Batch {
         dlb.order(ByteOrder.nativeOrder());
         indiceBuffer = dlb.asShortBuffer();
 
-        int posVer = 0;
-        int posCol = 0;
-        int posInd = 0;
+
 
         for (Square s : listeCarre) {
             vertexBuffer.put(s.getSquareCoords());
-            vertexBuffer.position(0);
+
+
+
 
             switch (s.getTypeT()){
                 case 0:
@@ -165,18 +165,24 @@ public class Batch {
                     break;
             }
 
-            colorBuffer.position(0);
+
+
+
+
+
 
             indiceBuffer.put(Indices);
-            indiceBuffer.position(0);
+            indiceplus();
 
-            posVer = posVer + s.getSquareCoords().length * 4;
-            posCol = posCol + tetraminoI.length * 4;
-            posInd = posInd + Indices.length * 2;
+
+
 
 
         }
-
+        indiceBuffer.position(0);
+        vertexBuffer.position(0);
+        //colorBuffer.put(squareColors);
+        colorBuffer.position(0);
         /* Chargement des shaders */
         int vertexShader = MyGLRenderer.loadShader(
                 GLES30.GL_VERTEX_SHADER,
@@ -235,5 +241,12 @@ public class Batch {
         GLES30.glDisableVertexAttribArray(IdPosition);
         GLES30.glDisableVertexAttribArray(IdCouleur);
 
+    }
+
+
+    public void indiceplus(){
+        for (int i = 0; i < Indices.length; i++) {
+            this.Indices[i] +=4;
+        }
     }
 }
