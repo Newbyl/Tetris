@@ -10,11 +10,14 @@ public class Grille {
     private int nbLigne;
     private int nbColonne;
 
-    public Grille(int nbLigne, int nbColonne) {
+    private int score;
+
+    public Grille(int nbLigne, int nbColonne, int score) {
         this.grilleStatique = new ArrayList<>(nbLigne);
         this.grilleDynamique = new ArrayList<>(nbLigne);
         this.grilleVide = new ArrayList<>(nbLigne);
 
+        this.score = score;
 
         this.nbLigne = nbLigne;
         this.nbColonne = nbColonne;
@@ -52,6 +55,10 @@ public class Grille {
             grilleDynamique.get(nbLigne - 2).set(milieu + 1, forme[1][2]);
         }
 
+    }
+
+    public void viderGrille() {
+        grilleDynamique = clone(grilleVide);
     }
 
     public int get(int x , int y){
@@ -169,7 +176,7 @@ public class Grille {
                         grilleStatique.remove(i);
                         ArrayList<Integer> l = this.grilleDynamique.get(nbLigne - 4);
                         grilleStatique.add(nbLigne - 1, l);
-
+                        score += 1000;
                         return true;
                     }
                 }
@@ -229,5 +236,10 @@ public class Grille {
         return nbColonne;
     }
 
-
+    @Override
+    public String toString() {
+        return "Grille{" +
+                "grilleDynamique=" + grilleDynamique +
+                '}';
+    }
 }

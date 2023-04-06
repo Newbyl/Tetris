@@ -44,9 +44,7 @@ public class OpenGLES30Activity extends Activity   {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-
                         mGLView.anim();
-
                 }
 
             }

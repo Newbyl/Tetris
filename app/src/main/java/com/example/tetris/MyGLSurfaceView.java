@@ -36,7 +36,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     /* MyGLRenderer va implémenter les méthodes de cette interface */
 
     private final MyGLRenderer mRenderer;
-    public Grille grille = new Grille(20,10);
+    public Grille grille = new Grille(20,10, 0);
 
     private Boolean mutex = true;
     public MyGLSurfaceView(Context context, AttributeSet attrs) {
@@ -48,13 +48,11 @@ public class MyGLSurfaceView extends GLSurfaceView {
         // Création du renderer qui va être lié au conteneur View créé
         mRenderer = new MyGLRenderer();
 
-        Tetromino tetromino = new Tetromino("O");
-
-        grille.addForme(tetromino);
-
-
         mRenderer.setGrille(grille);
+        mRenderer.initForme();
         setRenderer(mRenderer);
+
+
 
         // Option pour indiquer qu'on redessine uniquement si les données changent
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
@@ -70,13 +68,11 @@ public class MyGLSurfaceView extends GLSurfaceView {
         // Création du renderer qui va être lié au conteneur View créé
         mRenderer = new MyGLRenderer();
 
-        Tetromino tetromino = new Tetromino("O");
-
-        grille.addForme(tetromino);
-
-
         mRenderer.setGrille(grille);
+        mRenderer.initForme();
         setRenderer(mRenderer);
+
+
 
         // Option pour indiquer qu'on redessine uniquement si les données changent
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
@@ -90,7 +86,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 
 
-
+    public String cascade() {
+        return mRenderer.getPiecePrev();
+    }
 
 
     /* Comment interpréter les événements sur l'écran tactile */

@@ -13,14 +13,16 @@
         android:background="#00000000"
         android:elevation="1dp"
         android:text="SCORE"
-        android:textAlignment="center"
 
+        android:textAlignment="center"
         android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints,TextContrastCheck"
+        tools:visibility="visible" />
 
     <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="282dp"
         android:layout_height="732dp"
         android:layout_marginEnd="100dp"
@@ -37,5 +39,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="127dp"
+        android:layout_height="186dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/frameLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <com.example.tetris.PreviewView
+            android:id="@+id/previewView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

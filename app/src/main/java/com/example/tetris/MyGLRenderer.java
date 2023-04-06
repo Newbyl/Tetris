@@ -30,10 +30,6 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
-    private static final String TAG = "MyGLRenderer";
-    private Square mSquare;
-    private Square mSquare2;
-    private int frame = 0;
     private float width;
     private float height;
     // Les matrices habituelles Model/View/Projection
@@ -47,15 +43,18 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private Grille grille;
 
+    private ArrayList<String> listePieces = new ArrayList<>();
+    private ArrayList<String> piecesPossible= new ArrayList<String>(7);;
+
+
+
+
     /* Première méthode équivalente à la fonction init en OpenGLSL */
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
-
         // la couleur du fond d'écran
         GLES30.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        /* on va définir une classe Square pour dessiner des carrés */
-        //mSquare = new Square(mSquarePosition, 0, 50);
 
     }
 
@@ -67,7 +66,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     /* Deuxième méthode équivalente à la fonction Display */
     @Override
     public void onDrawFrame(GL10 unused) {
-        float[] scratch = new float[16]; // pour stocker une matrice
         float[] scratch2 = new float[16]; // pour stocker une matrice
         int taille = Integer.min((int) (width/grille.getNbColonne()/2),(int) (height/grille.getNbLigne()/2));
         // glClear rien de nouveau on vide le buffer d,e couleur et de profondeur */
@@ -75,30 +73,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         /* on utilise une classe Matrix (similaire à glm) pour définir nos matrices P, V et M*/
 
-        /*Si on souhaite positionner une caméra mais ici on n'en a pas besoin*/
-       // Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
-         /* Pour le moment on va utiliser une projection orthographique
-           donc View = Identity
-         */
+
         Matrix.setIdentityM(mViewMatrix,0);
 
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
         mModelMatrix = setOrigin(mModelMatrix,taille);
-
-
-        /* Pour définir une translation on donne les paramètres de la translation
-        et la matrice (ici mModelMatrix) est multipliée par la translation correspondante
-         */
-        //Matrix.translateM(mModelMatrix, 0, mSquarePosition[0], mSquarePosition[1], 0);
-        /* scratch est la matrice PxVxM finale */
-        //Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
-
-
-        /* on appelle la méthode dessin du carré élémentaire */
-        //mSquare.draw(scratch);
-
 
 
         if (grille.estVide()){
@@ -164,9 +145,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                     );
                 }
                 else {
-                    listSquare.add(
-                            new Square(mSquarePosition,7, taille)
-                    );
+                    //listSquare.add(new Square(mSquarePosition,7, taille));
                 }
 
 
@@ -215,16 +194,30 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     }
 
-    public void aforme(){
-        ArrayList<String> tt = new ArrayList<String>();
-        tt.add("I");
-        tt.add("O");
-        tt.add("T");
-        tt.add("L");
-        tt.add("J");
-        Random rand = new Random();
+    public void initForme() {
+        piecesPossible.add("I");
+        piecesPossible.add("O");
+        piecesPossible.add("T");
+        piecesPossible.add("L");
+        piecesPossible.add("J");
+        piecesPossible.add("S");
+        piecesPossible.add("Z");
 
-        grille.addForme(new Tetromino(tt.get(rand.nextInt(tt.size()))));
+        Random random = new Random();
+        listePieces.add(0, piecesPossible.get(random.nextInt(piecesPossible.size())));
+        listePieces.add(1, piecesPossible.get(random.nextInt(piecesPossible.size())));
+    }
+
+    public void aforme(){
+        Tetromino tetromino = new Tetromino(listePieces.get(0));
+        listePieces.set(0, listePieces.get(1));
+        remplissageListePiece();
+        grille.addForme(tetromino);
+    }
+
+    public void remplissageListePiece() {
+        Random random = new Random();
+        listePieces.add(1, piecesPossible.get(random.nextInt(piecesPossible.size())));
     }
 
     public void anima(){
@@ -244,4 +237,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.grille = grille;
     }
 
+    public String getPiecePrev() {
+        return listePieces.get(0);
+    }
 }
