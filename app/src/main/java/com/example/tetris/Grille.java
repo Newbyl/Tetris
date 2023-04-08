@@ -289,8 +289,6 @@ public class Grille {
         return nbLigne;
     }
 
-
-
     public int getNbColonne() {
         return nbColonne;
     }
