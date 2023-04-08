@@ -105,6 +105,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
                 break;
             case MotionEvent.ACTION_UP:
                 mRenderer.setPosition(0.0f,-9.0f);
+                grille.rotation();
                 if ((mPreviousX < e.getX()) && ((mPreviousX - e.getX() > 50) || (mPreviousX - e.getX() < -50)))
                 {
                     grille.droit();

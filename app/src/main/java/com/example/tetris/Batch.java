@@ -135,32 +135,36 @@ public class Batch {
         for (Square s : listeCarre) {
             vertexBuffer.put(s.getSquareCoords());
 
-
-
-
             switch (s.getTypeT()){
                 case 0:
+                case 10:
                     colorBuffer.put(tetraminoI);
                     break;
                 case 1:
+                case 11:
                     colorBuffer.put(tetraminoO);
                     break;
                 case 2:
+                case 12:
                     colorBuffer.put(tetraminoT);
                     break;
                 case 3:
+                case 13:
                     colorBuffer.put(tetraminoL);
                     break;
                 case 4:
+                case 14:
                     colorBuffer.put(tetraminoJ);
                     break;
                 case 5:
+                case 15:
                     colorBuffer.put(tetraminoZ);
                     break;
                 case 6:
+                case 16:
                     colorBuffer.put(tetraminoS);
                     break;
-                case 7:
+                default:
                     colorBuffer.put(squareColors);
                     break;
             }

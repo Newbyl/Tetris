@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 
 public class PreviewView extends GLSurfaceView {
 
-    Grille prev = new Grille(3, 4, 0);
+    Grille prev = new Grille(3, 3, 0);
 
     PreviewRenderer previewRenderer;
 

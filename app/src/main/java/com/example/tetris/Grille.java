@@ -61,6 +61,86 @@ public class Grille {
         grilleDynamique = clone(grilleVide);
     }
 
+    // Ca marche normalement faut juste copier la piece dans forme
+    // TODO: Ca trouve la piece et ca la copie dans le tableau forme
+    // Ca fait la rotation du tableau forme avec la piece dedans en transposant et en inversant les colones
+    // Ca copie ensuite la nouvelle piece dans grilleDynamique
+    // FIXME
+    public void rotation() {
+        ArrayList<ArrayList<Integer>> tmp = clone(grilleVide);
+        int[][] forme = new int[3][3];
+        int hauteur = 0;
+        int largeur = 0;
+        int tailleMat = 3;
+
+        for (int ligne = 0; ligne < nbLigne; ligne++) {
+            for (int colonne = 0; colonne < nbColonne; colonne++) {
+                if (grilleDynamique.get(ligne).get(colonne) > 10){
+                    hauteur = ligne;
+                    largeur = colonne;
+                    break;
+                }
+            }
+        }
+
+        if (hauteur - 1 < 0 || hauteur + 1 == nbLigne
+                || largeur + 1 == nbColonne || largeur - 1 < 0)
+            return;
+
+        forme[0][0] = grilleDynamique.get(hauteur + 1).get(largeur - 1);
+        forme[0][1] = grilleDynamique.get(hauteur + 1).get(largeur);
+        forme[0][2] = grilleDynamique.get(hauteur + 1).get(largeur + 1);
+
+        forme[1][0] = grilleDynamique.get(hauteur).get(largeur - 1);
+        forme[1][1] = grilleDynamique.get(hauteur).get(largeur);
+        forme[1][2] = grilleDynamique.get(hauteur).get(largeur + 1);
+
+        forme[2][0] = grilleDynamique.get(hauteur - 1).get(largeur - 1);
+        forme[2][1] = grilleDynamique.get(hauteur - 1).get(largeur);
+        forme[2][2] = grilleDynamique.get(hauteur - 1).get(largeur + 1);
+
+        for (int i = 0; i < tailleMat; i++) {
+            for (int j = i; j < tailleMat; j++) {
+                int tmpVal = forme[i][j];
+                forme[i][j] = forme[j][i];
+                forme[j][i] = tmpVal;
+            }
+        }
+
+        for (int i = 0; i < tailleMat; i++) {
+            for (int j = 0; j < tailleMat / 2; j++) {
+                int temp = forme[i][j];
+                forme[i][j] = forme[i][tailleMat - 1 - j];
+                forme[i][tailleMat - 1 - j] = temp;
+            }
+        }
+
+        tmp.get(hauteur + 1).set(largeur - 1, forme[0][0]);
+        tmp.get(hauteur + 1).set(largeur, forme[0][1]);
+        tmp.get(hauteur + 1).set(largeur + 1, forme[0][2]);
+
+        tmp.get(hauteur).set(largeur - 1, forme[1][0]);
+        tmp.get(hauteur).set(largeur, forme[1][1]);
+        tmp.get(hauteur).set(largeur + 1, forme[1][2]);
+
+        tmp.get(hauteur - 1).set(largeur - 1, forme[2][0]);
+        tmp.get(hauteur - 1).set(largeur, forme[2][1]);
+        tmp.get(hauteur - 1).set(largeur + 1, forme[2][2]);
+
+
+
+
+
+        if (!testCollision(tmp)) {
+            grilleDynamique = clone(tmp);
+        }
+
+
+    }
+
+
+
+
     public int get(int x , int y){
         return this.grilleDynamique.get(y).get(x);
     }

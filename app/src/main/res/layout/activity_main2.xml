@@ -4,16 +4,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/back">
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="220dp"
+        android:layout_marginEnd="144dp"
+        android:background="@drawable/custom_button"
         android:onClick="swap"
-        tools:layout_editor_absoluteX="158dp"
-        tools:layout_editor_absoluteY="323dp"
-        />
+        android:text="10 x 20"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="332dp"
+        android:layout_marginEnd="144dp"
+        android:background="@drawable/custom_button"
+        android:onClick="swap"
+        android:text="20 x 40"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="444dp"
+        android:layout_marginEnd="144dp"
+        android:background="@drawable/custom_button"
+        android:onClick="swap"
+        android:text="40 x 80"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="137dp"
+        android:layout_height="101dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="136dp"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:text="Tetris"
+        android:textColor="#FFFFFF"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

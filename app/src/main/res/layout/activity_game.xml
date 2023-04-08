@@ -4,22 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Game">
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="282dp"
-        android:layout_height="107dp"
-        android:background="#00000000"
-        android:elevation="1dp"
-        android:text="SCORE"
-
-        android:textAlignment="center"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints,TextContrastCheck"
-        tools:visibility="visible" />
+    tools:context=".Game"
+    android:background="@drawable/back">
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -42,18 +28,45 @@
     </FrameLayout>
 
     <FrameLayout
-        android:layout_width="127dp"
-        android:layout_height="186dp"
+        android:id="@+id/frameLayout2"
+        android:layout_width="129dp"
+        android:layout_height="116dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/frameLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.113">
 
         <com.example.tetris.PreviewView
             android:id="@+id/previewView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="129dp"
+        android:layout_height="54dp"
+
+        android:background="#00000000"
+        android:elevation="1dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="SCORE"
+        android:textAlignment="center"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
+        tools:ignore="MissingConstraints,TextContrastCheck"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="129dp"
+        android:layout_height="70dp"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:text="SUIVANT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
