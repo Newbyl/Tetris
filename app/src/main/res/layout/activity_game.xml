@@ -45,7 +45,7 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/score"
         android:layout_width="129dp"
         android:layout_height="54dp"
 

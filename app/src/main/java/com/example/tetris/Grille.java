@@ -127,27 +127,14 @@ public class Grille {
         tmp.get(hauteur - 1).set(largeur, forme[2][1]);
         tmp.get(hauteur - 1).set(largeur + 1, forme[2][2]);
 
-
-
-
-
         if (!testCollision(tmp)) {
             grilleDynamique = clone(tmp);
         }
-
-
     }
 
-
-
-
-    public int get(int x , int y){
-        return this.grilleDynamique.get(y).get(x);
-    }
 
     public void test(){
         ArrayList<ArrayList<Integer>> tmp = clone(grilleVide);
-        //System.out.println(tmp);
         boolean end = false;
         for (int i = 0; i < nbColonne; i++) {
             if (grilleDynamique.get(0).get(i) != 0) {
@@ -202,8 +189,9 @@ public class Grille {
         ArrayList<ArrayList<Integer>> tmp = clone(grilleVide);
         boolean end = false;
         for (int i = 0; i < nbLigne; i++) {
-            if (grilleDynamique.get(i).get(0)!=0){
+            if (grilleDynamique.get(i).get(0) != 0) {
                 end = true;
+                break;
             }
         }
         if (!end) {
@@ -219,10 +207,6 @@ public class Grille {
         }
 
 
-    }
-
-    public ArrayList<ArrayList<Integer>> getGrilleVide() {
-        return grilleVide;
     }
 
     public void recopieDynamiqueVersStatique() {
@@ -269,11 +253,6 @@ public class Grille {
         return false;
     }
 
-
-    public int getTaille(){
-        return this.grilleStatique.get(0).size();
-    }
-
     public ArrayList<ArrayList<Integer>> getGrilleStatique() {
         return grilleStatique;
     }
@@ -316,10 +295,7 @@ public class Grille {
         return nbColonne;
     }
 
-    @Override
-    public String toString() {
-        return "Grille{" +
-                "grilleDynamique=" + grilleDynamique +
-                '}';
+    public int getScore() {
+        return score;
     }
 }
