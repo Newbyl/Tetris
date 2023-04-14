@@ -35,6 +35,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
     /* Un attribut : le renderer (GLSurfaceView.Renderer est une interface générique disponible) */
     /* MyGLRenderer va implémenter les méthodes de cette interface */
 
+
+
     private final MyGLRenderer mRenderer;
     public Grille grille = new Grille(20,10, 0);
 
