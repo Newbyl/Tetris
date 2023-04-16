@@ -20,7 +20,24 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void swap(View v){
-        startActivity(new Intent(MainActivity.this,Game.class));
+        Intent intent = new Intent(this, Game.class);
+        intent.putExtra("XX", 10);
+        intent.putExtra("YY", 20);
+        startActivity(intent);
     }
+    public void swap2(View v){
+        Intent intent = new Intent(this, Game.class);
+        intent.putExtra("XX", 20);
+        intent.putExtra("YY", 40);
+        startActivity(intent);
+    }
+    public void swap3(View v){
+        Intent intent = new Intent(this, Game.class);
+        intent.putExtra("XX", 40);
+        intent.putExtra("YY", 80);
+        startActivity(intent);
+    }
+
+
 
 }

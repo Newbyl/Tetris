@@ -170,12 +170,9 @@ public class Square {
                 -X + Position[0], -X + Position[1], 0.0f,
                 X + Position[0], -X + Position[1], 0.0f,
                 X + Position[0], X + Position[1], 0.0f};
-
-
-
     }
 
-    //
+
 
 
 

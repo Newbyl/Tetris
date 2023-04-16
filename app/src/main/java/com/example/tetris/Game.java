@@ -3,6 +3,7 @@ package com.example.tetris;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +21,12 @@ public class Game extends AppCompatActivity {
 
         mGLView = findViewById(R.id.myGLSurfaceView4);
         GLPrev = findViewById(R.id.previewView);
-
+        Intent intent = getIntent();
+        int x = intent.getIntExtra("XX",0);
+        int y = intent.getIntExtra("YY",0);
+        Log.d("XXXX", ""+x);
+        Log.d("XXXX", ""+y);
+        mGLView.setGrille(x,y);
 
         TextView score = findViewById(R.id.score);
 

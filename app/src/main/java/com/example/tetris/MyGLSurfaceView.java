@@ -38,7 +38,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 
     private final MyGLRenderer mRenderer;
-    public Grille grille = new Grille(20,10, 0);
+    public Grille grille;
 
     private Boolean mutex = true;
     public MyGLSurfaceView(Context context, AttributeSet attrs) {
@@ -154,6 +154,12 @@ public class MyGLSurfaceView extends GLSurfaceView {
         return test;
     }
 
+    public void setGrille(int x , int y){
+        this.grille = new Grille(y,x,0);
+        mRenderer.setGrille(this.grille);
+        mRenderer.initForme();
+
+    }
 
 
 }
