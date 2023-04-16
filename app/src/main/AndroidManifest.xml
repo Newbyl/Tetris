@@ -17,9 +17,25 @@
         android:theme="@style/Theme.Tetris"
         tools:targetApi="31">
         <activity
-            android:theme="@style/Theme.Design.NoActionBar"
+            android:name=".LoseActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Design.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".WinActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Design.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Game"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.Design.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -41,7 +57,6 @@
         <activity
             android:name=".OpenGLES30Activity"
             android:exported="true">
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

@@ -61,11 +61,7 @@ public class Grille {
         grilleDynamique = clone(grilleVide);
     }
 
-    // Ca marche normalement faut juste copier la piece dans forme
-    // TODO: Ca trouve la piece et ca la copie dans le tableau forme
-    // Ca fait la rotation du tableau forme avec la piece dedans en transposant et en inversant les colones
-    // Ca copie ensuite la nouvelle piece dans grilleDynamique
-    // FIXME
+
     public void rotation() {
         ArrayList<ArrayList<Integer>> tmp = clone(grilleVide);
         int[][] forme = new int[3][3];
@@ -241,7 +237,7 @@ public class Grille {
                         ArrayList<Integer> l = this.grilleDynamique.get(nbLigne - 4);
                         grilleStatique.add(nbLigne - 1, l);
                         score += 1000;
-                        return true;
+                        return grilleStatique.equals(grilleVide);
                     }
                 }
                 else {

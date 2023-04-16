@@ -84,6 +84,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         if (grille.estVide()){
             aforme();
+
         }
 
         long start = System.nanoTime();
@@ -215,9 +216,27 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         listePieces.add(1, piecesPossible.get(random.nextInt(piecesPossible.size())));
     }
 
-    public void anima(){
+    public Boolean anima(){
         this.grille.test();
-        this.grille.testLigneComplete();
+        return this.grille.testLigneComplete();
+    }
+
+    public Boolean diffZero(ArrayList<Integer> arr) {
+        boolean containsNonZero = false;
+        for (int i = 0; i < arr.size(); i++) {
+            if (arr.get(i) != 0) {
+                containsNonZero = true;
+                break;
+            }
+        }
+
+        return containsNonZero;
+    }
+
+    public Boolean testLose(){
+        ArrayList<ArrayList<Integer>> statique = grille.getGrilleStatique();
+
+        return diffZero(statique.get(statique.size() - 1));
     }
 
     public float[] getPosition() {

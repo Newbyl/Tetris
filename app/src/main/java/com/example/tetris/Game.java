@@ -1,6 +1,7 @@
 package com.example.tetris;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -29,11 +30,19 @@ public class Game extends AppCompatActivity {
             public void run() {
                 while (true) {
                     try {
-                        Thread.sleep(400);
+                        Thread.sleep(200);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                        mGLView.anim();
+                        if (mGLView.anim())
+                        {
+                            startActivity(new Intent(Game.this,WinActivity.class));
+                        }
+
+                        if (mGLView.lose()){
+                            startActivity(new Intent(Game.this,LoseActivity.class));
+                            break;
+                        }
                 }
 
             }

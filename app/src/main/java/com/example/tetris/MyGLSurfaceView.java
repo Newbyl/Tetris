@@ -84,7 +84,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
     /* pour gérer la translation */
     private float mPreviousX;
     private float mPreviousY;
-    private boolean condition = false;
 
 
 
@@ -140,14 +139,19 @@ public class MyGLSurfaceView extends GLSurfaceView {
         return true;
     }
 
+    public Boolean lose() {
+        return mRenderer.testLose();
+    }
 
-    public void anim(){
-        mRenderer.anima();
+    public Boolean anim(){
+        Boolean test = mRenderer.anima();
         if (mutex) {
             mutex = false;
             requestRender();
             mutex = true;
         }
+
+        return test;
     }
 
 
