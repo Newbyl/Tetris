@@ -3,14 +3,15 @@ package com.example.tetris;
 import java.util.ArrayList;
 
 public class Grille {
+
     private ArrayList<ArrayList<Integer>> grilleStatique;
     private ArrayList<ArrayList<Integer>> grilleDynamique;
     private ArrayList<ArrayList<Integer>> grilleVide;
 
-    private int nbLigne;
-    private int nbColonne;
-
+    private final int nbLigne;
+    private final int nbColonne;
     private int score;
+
 
     public Grille(int nbLigne, int nbColonne, int score) {
         this.grilleStatique = new ArrayList<>(nbLigne);
@@ -36,12 +37,8 @@ public class Grille {
         }
     }
 
-    /**
-     * Ajoute le tetromino a la grille dynamique
-     * @param tetromino
-     */
-    public void addForme(Tetromino tetromino){
 
+    public void addForme(Tetromino tetromino){
         if (estVide()) {
             int[][] forme = tetromino.getTableauForme();
             int milieu = nbColonne / 2;
@@ -54,8 +51,8 @@ public class Grille {
             grilleDynamique.get(nbLigne - 2).set(milieu, forme[1][1]);
             grilleDynamique.get(nbLigne - 2).set(milieu + 1, forme[1][2]);
         }
-
     }
+
 
     public void viderGrille() {
         grilleDynamique = clone(grilleVide);
@@ -69,6 +66,7 @@ public class Grille {
         int largeur = 0;
         int tailleMat = 3;
 
+        // On cherche la piece dans grille
         for (int ligne = 0; ligne < nbLigne; ligne++) {
             for (int colonne = 0; colonne < nbColonne; colonne++) {
                 if (grilleDynamique.get(ligne).get(colonne) > 10){
@@ -79,10 +77,12 @@ public class Grille {
             }
         }
 
+        // Si la piece est collé au paroies on ne fait pas de rotation
         if (hauteur - 1 < 0 || hauteur + 1 == nbLigne
                 || largeur + 1 == nbColonne || largeur - 1 < 0)
             return;
 
+        // On met la piece dans la matrice forme
         forme[0][0] = grilleDynamique.get(hauteur + 1).get(largeur - 1);
         forme[0][1] = grilleDynamique.get(hauteur + 1).get(largeur);
         forme[0][2] = grilleDynamique.get(hauteur + 1).get(largeur + 1);
@@ -95,6 +95,7 @@ public class Grille {
         forme[2][1] = grilleDynamique.get(hauteur - 1).get(largeur);
         forme[2][2] = grilleDynamique.get(hauteur - 1).get(largeur + 1);
 
+        // Transposition de la matrice
         for (int i = 0; i < tailleMat; i++) {
             for (int j = i; j < tailleMat; j++) {
                 int tmpVal = forme[i][j];
@@ -103,6 +104,7 @@ public class Grille {
             }
         }
 
+        // Inversion des colonnes
         for (int i = 0; i < tailleMat; i++) {
             for (int j = 0; j < tailleMat / 2; j++) {
                 int temp = forme[i][j];
@@ -111,6 +113,7 @@ public class Grille {
             }
         }
 
+        // On met la piece tourné dans la grille temporaire
         tmp.get(hauteur + 1).set(largeur - 1, forme[0][0]);
         tmp.get(hauteur + 1).set(largeur, forme[0][1]);
         tmp.get(hauteur + 1).set(largeur + 1, forme[0][2]);
@@ -123,6 +126,8 @@ public class Grille {
         tmp.get(hauteur - 1).set(largeur, forme[2][1]);
         tmp.get(hauteur - 1).set(largeur + 1, forme[2][2]);
 
+        // Si la rotation n'entraine pas de collision
+        // on met la piece tourné dans la grille
         if (!testCollision(tmp)) {
             grilleDynamique = clone(tmp);
         }
@@ -159,7 +164,6 @@ public class Grille {
 
     public void droit(){
         ArrayList<ArrayList<Integer>> tmp = clone(grilleVide);
-        //System.out.println(tmp);
         boolean end = false;
         for (int i = 0; i < nbLigne; i++) {
             if (grilleDynamique.get(i).get(nbColonne - 1) != 0) {
@@ -205,6 +209,7 @@ public class Grille {
 
     }
 
+
     public void recopieDynamiqueVersStatique() {
         for (int i = 0; i < nbLigne; i++)
             for (int j = 0 ; j < nbColonne; j++)
@@ -213,6 +218,7 @@ public class Grille {
                 }
         grilleDynamique = clone(grilleVide);
     }
+
 
     public Boolean testCollision(ArrayList<ArrayList<Integer>> tmp) {
         for (int i = 0; i < nbLigne; i++)
@@ -224,6 +230,7 @@ public class Grille {
 
         return false;
     }
+
 
     public Boolean testLigneComplete() {
         int cpt = 0;
@@ -249,9 +256,11 @@ public class Grille {
         return false;
     }
 
+
     public ArrayList<ArrayList<Integer>> getGrilleStatique() {
         return grilleStatique;
     }
+
 
     public ArrayList<ArrayList<Integer>> getGrilleDynamique() {
         return grilleDynamique;
@@ -281,13 +290,17 @@ public class Grille {
         }
         return true;
     }
+
+
     public int getNbLigne() {
         return nbLigne;
     }
 
+
     public int getNbColonne() {
         return nbColonne;
     }
+
 
     public int getScore() {
         return score;

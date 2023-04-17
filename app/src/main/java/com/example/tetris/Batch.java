@@ -8,6 +8,12 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 import java.util.ArrayList;
 
+/**
+ * Classe permettant de faire du "Batching"
+ * Technique qui met tout les triangles à dessiner dans un "Batch"
+ * qui permet de tout dessiner d'un coup sans faire plusieurs appels
+ * à la carte graphique et ainsi gagner en performance
+ */
 public class Batch {
     private final String vertexShaderCode =
             "#version 300 es\n"+
@@ -45,9 +51,6 @@ public class Batch {
     Identifiant du programme et pour les variables attribute ou uniform
      */
     private final int IdProgram; // identifiant du programme pour lier les shaders
-    private int IdPosition; // idendifiant (location) pour transmettre les coordonnées au vertex shader
-    private int IdCouleur; // identifiant (location) pour transmettre les couleurs
-    private int IdMVPMatrix; // identifiant (location) pour transmettre la matrice PxVxM
 
     static final int COORDS_PER_VERTEX = 3; // nombre de coordonnées par vertex
     static final int COULEURS_PER_VERTEX = 4; // nombre de composantes couleur par vertex
@@ -105,11 +108,7 @@ public class Batch {
 
     int[] linkStatus = {0};
 
-    private final int vertexStride = COORDS_PER_VERTEX * 4; // le pas entre 2 sommets : 4 bytes per vertex
-
-    private final int couleurStride = COULEURS_PER_VERTEX * 4; // le pas entre 2 couleurs
-
-    private int nbCarre;
+    private final int nbCarre;
 
 
     public Batch(ArrayList<Square> listeCarre) {
@@ -129,8 +128,6 @@ public class Batch {
         ByteBuffer dlb = ByteBuffer.allocateDirect(listeCarre.size() * Indices.length * 2);
         dlb.order(ByteOrder.nativeOrder());
         indiceBuffer = dlb.asShortBuffer();
-
-
 
         for (Square s : listeCarre) {
             vertexBuffer.put(s.getSquareCoords());
@@ -169,23 +166,14 @@ public class Batch {
                     break;
             }
 
-
-
-
-
-
-
             indiceBuffer.put(Indices);
             indiceplus();
-
-
-
-
-
         }
+
         indiceBuffer.position(0);
         vertexBuffer.position(0);
         colorBuffer.position(0);
+
         /* Chargement des shaders */
         int vertexShader = MyGLRenderer.loadShader(
                 GLES30.GL_VERTEX_SHADER,
@@ -208,28 +196,35 @@ public class Batch {
         GLES30.glUseProgram(IdProgram);
 
         // get handle to shape's transformation matrix
-        IdMVPMatrix = GLES30.glGetUniformLocation(IdProgram, "uMVPMatrix");
+        // identifiant (location) pour transmettre la matrice PxVxM
+        int idMVPMatrix = GLES30.glGetUniformLocation(IdProgram, "uMVPMatrix");
 
         // Apply the projection and view transformation
-        GLES30.glUniformMatrix4fv(IdMVPMatrix, 1, false, mvpMatrix, 0);
+        GLES30.glUniformMatrix4fv(idMVPMatrix, 1, false, mvpMatrix, 0);
 
 
         // get handle to vertex shader's vPosition member et vCouleur member
-        IdPosition = GLES30.glGetAttribLocation(IdProgram, "vPosition");
-        IdCouleur = GLES30.glGetAttribLocation(IdProgram, "vCouleur");
+        // idendifiant (location) pour transmettre les coordonnées au vertex shader
+        int idPosition = GLES30.glGetAttribLocation(IdProgram, "vPosition");
+        // identifiant (location) pour transmettre les couleurs
+        int idCouleur = GLES30.glGetAttribLocation(IdProgram, "vCouleur");
 
         /* Activation des Buffers */
-        GLES30.glEnableVertexAttribArray(IdPosition);
-        GLES30.glEnableVertexAttribArray(IdCouleur);
+        GLES30.glEnableVertexAttribArray(idPosition);
+        GLES30.glEnableVertexAttribArray(idCouleur);
 
         /* Lecture des Buffers */
+        // le pas entre 2 sommets : 4 bytes per vertex
+        int vertexStride = COORDS_PER_VERTEX * 4;
         GLES30.glVertexAttribPointer(
-                IdPosition, COORDS_PER_VERTEX,
+                idPosition, COORDS_PER_VERTEX,
                 GLES30.GL_FLOAT, false,
                 vertexStride, vertexBuffer);
 
+        // le pas entre 2 couleurs
+        int couleurStride = COULEURS_PER_VERTEX * 4;
         GLES30.glVertexAttribPointer(
-                IdCouleur, COULEURS_PER_VERTEX,
+                idCouleur, COULEURS_PER_VERTEX,
                 GLES30.GL_FLOAT, false,
                 couleurStride, colorBuffer);
 
@@ -241,8 +236,8 @@ public class Batch {
 
 
         // Disable vertex array
-        GLES30.glDisableVertexAttribArray(IdPosition);
-        GLES30.glDisableVertexAttribArray(IdCouleur);
+        GLES30.glDisableVertexAttribArray(idPosition);
+        GLES30.glDisableVertexAttribArray(idCouleur);
 
     }
 

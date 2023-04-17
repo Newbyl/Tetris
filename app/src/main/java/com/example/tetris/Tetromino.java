@@ -1,7 +1,9 @@
 package com.example.tetris;
 
 public class Tetromino {
+
     private int[][] tableauForme;
+
 
     public Tetromino(String forme) {
         switch (forme){

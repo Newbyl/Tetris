@@ -16,31 +16,21 @@
 
 package com.example.tetris;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 
-/* La classe MyGLSurfaceView avec en particulier la gestion des événements
-  et la création de l'objet renderer
-
-*/
-
-
-/* On va dessiner un carré qui peut se déplacer grâce à une translation via l'écran tactile */
-
 public class MyGLSurfaceView extends GLSurfaceView {
-
-    /* Un attribut : le renderer (GLSurfaceView.Renderer est une interface générique disponible) */
-    /* MyGLRenderer va implémenter les méthodes de cette interface */
-
-
 
     private final MyGLRenderer mRenderer;
     public Grille grille;
 
-    private Boolean mutex = true;
+    private float mPreviousX;
+
+
     public MyGLSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
@@ -61,77 +51,57 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
     }
 
+
     public MyGLSurfaceView(Context context) {
         super(context);
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-        // Création d'un context OpenGLES 3.0
+
         setEGLContextClientVersion(3);
 
-        // Création du renderer qui va être lié au conteneur View créé
         mRenderer = new MyGLRenderer();
-
         mRenderer.setGrille(grille);
         mRenderer.initForme();
         setRenderer(mRenderer);
 
-
-
-        // Option pour indiquer qu'on redessine uniquement si les données changent
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-
     }
 
-    /* pour gérer la translation */
-    private float mPreviousX;
-    private float mPreviousY;
-
-
-
+    /**
+     * Methode qui permet de faire la communication avec la preview
+     */
     public String cascade() {
         return mRenderer.getPiecePrev();
     }
 
 
-    /* Comment interpréter les événements sur l'écran tactile */
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         // Les coordonnées du point touché sur l'écran
         float x = e.getX();
-        float y = e.getY();
 
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mPreviousX = x;
-                mPreviousY = y;
                 break;
             case MotionEvent.ACTION_UP:
                 mRenderer.setPosition(0.0f,-9.0f);
+
                 if ((mPreviousX < e.getX()) && ((mPreviousX - e.getX() > 50) || (mPreviousX - e.getX() < -50)))
                 {
                     grille.droit();
-
-                    if (mutex) {
-                        mutex = false;
-                        requestRender();
-                        mutex = true;
-                        return true;
-                    }
-
+                    requestRender();
                     return true;
                 }
-                // J'ai mis les borne pour eviter de deplacer si on drag pas assez
+
+                // Borne de 50 pixel pour un deplacement vers la gauche / droite
                 else if ((mPreviousX > e.getX()) && ((mPreviousX - e.getX() > 50) || (mPreviousX - e.getX() < -50)))
                 {
                     grille.gauche();
-
-                    if (mutex) {
-                        mutex = false;
-                        requestRender();
-                        mutex = true;
-                        return true;
-                    }
+                    requestRender();
                     return true;
                 }
+
                 else {
                     grille.rotation();
                 }
@@ -139,20 +109,18 @@ public class MyGLSurfaceView extends GLSurfaceView {
         return true;
     }
 
+
     public Boolean lose() {
         return mRenderer.testLose();
     }
 
+
     public Boolean anim(){
         Boolean test = mRenderer.anima();
-        if (mutex) {
-            mutex = false;
-            requestRender();
-            mutex = true;
-        }
-
+        requestRender();
         return test;
     }
+
 
     public void setGrille(int x , int y){
         this.grille = new Grille(y,x,0);
@@ -160,6 +128,4 @@ public class MyGLSurfaceView extends GLSurfaceView {
         mRenderer.initForme();
 
     }
-
-
 }

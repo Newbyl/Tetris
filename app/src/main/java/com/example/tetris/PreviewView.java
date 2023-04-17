@@ -14,14 +14,11 @@ public class PreviewView extends GLSurfaceView {
         super(context, attrs);
 
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-        // Création d'un context OpenGLES 3.0
         setEGLContextClientVersion(3);
 
         previewRenderer = new PreviewRenderer();
-
         previewRenderer.setPrev(prev);
         setRenderer(previewRenderer);
-        // Option pour indiquer qu'on redessine uniquement si les données changent
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
         requestRender();
     }

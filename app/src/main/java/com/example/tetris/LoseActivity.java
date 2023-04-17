@@ -1,10 +1,10 @@
 package com.example.tetris;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LoseActivity extends AppCompatActivity {
 
@@ -13,6 +13,7 @@ public class LoseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lose);
     }
+
 
     public void swap(View v){
         startActivity(new Intent(LoseActivity.this, MainActivity.class));
