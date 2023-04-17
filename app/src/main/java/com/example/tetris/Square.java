@@ -18,7 +18,7 @@ package com.example.tetris;
 /**
  * Crée un carré
  */
-public class Square implements Forme{
+public class Square implements Forme {
     float X;
     float[] squareCoords;
     private final int typeT;
