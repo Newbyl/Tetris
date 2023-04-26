@@ -1,6 +1,7 @@
 package com.example.tetris;
 
 import android.opengl.GLES30;
+import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -52,122 +53,52 @@ public class Batch {
      */
     private final int IdProgram; // identifiant du programme pour lier les shaders
 
-    static final int COORDS_PER_VERTEX = 3; // nombre de coordonnées par vertex
-    static final int COULEURS_PER_VERTEX = 4; // nombre de composantes couleur par vertex
+    // nombre de coordonnées par vertex
+     // nombre de composantes couleur par vertex
 
-    // Le tableau des couleurs
-    static float[] tetraminoI = {
-            .0f,  1.0f, 1.0f, 1.0f,
-            .0f,  1.0f, 1.0f, 1.0f,
-            .0f,  1.0f, 1.0f, 1.0f,
-            .0f,  1.0f, 1.0f, 1.0f };
 
-    static float[] tetraminoO = {
-            1.0f,  1.0f, 0.0f, 1.0f,
-            1.0f,  1.0f, 0.0f, 1.0f,
-            1.0f,  1.0f, 0.0f, 1.0f,
-            1.0f,  1.0f, 0.0f, 1.0f };
 
-    static float[] tetraminoT = {
-            .67f,  .03f, 1.0f, 1.0f,
-            .67f,  .03f, 1.0f, 1.0f,
-            .67f,  .03f, 1.0f, 1.0f,
-            .67f,  .03f, 1.0f, 1.0f };
 
-    static float[] tetraminoL = {
-            1.0f,  .67f, .06f, 1.0f,
-            1.0f,  .67f, .06f, 1.0f,
-            1.0f,  .67f, .06f, 1.0f,
-            1.0f,  .67f, .06f, 1.0f };
-
-    static float[] tetraminoJ = {
-            0.0f,  0.0f, 1.0f, 1.0f,
-            0.0f,  0.0f, 1.0f, 1.0f,
-            0.0f,  0.0f, 1.0f, 1.0f,
-            0.0f,  0.0f, 1.0f, 1.0f };
-
-    static float[] tetraminoZ = {
-            1.0f,  0.0f, 0.0f, 1.0f,
-            1.0f,  0.0f, 0.0f, 1.0f,
-            1.0f,  0.0f, 0.0f, 1.0f,
-            1.0f,  0.0f, 0.0f, 1.0f };
-
-    static float[] tetraminoS = {
-            0.0f,  1.0f, 0.0f, 1.0f,
-            0.0f,  1.0f, 0.0f, 1.0f,
-            0.0f,  1.0f, 0.0f, 1.0f,
-            0.0f,  1.0f, 0.0f, 1.0f };
-
-    static float[] squareColors = {
-            1.0f,  0.0f, 0.0f, 1.0f,
-            1.0f,  1.0f, 1.0f, 1.0f,
-            0.0f,  1.0f, 0.0f, 1.0f,
-            0.0f,  0.0f, 1.0f, 1.0f };
-
-    private final short[] Indices = { 0, 1, 2, 0, 2, 3 };
+    private int COORDS_PER_VERTEX;
+    private int COULEURS_PER_VERTEX;
+    private int IND_PER_VERTEX;
+    private int lastIndice = 0;
 
     int[] linkStatus = {0};
 
     private final int nbCarre;
 
 
-    public Batch(ArrayList<Square> listeCarre) {
+    public Batch(ArrayList<Forme> listeCarre) {
         nbCarre = listeCarre.size();
-
+        COORDS_PER_VERTEX = 3;
+        Log.d("NAB", "COORD:  "+ COORDS_PER_VERTEX);
+        COULEURS_PER_VERTEX = 4;
+        Log.d("NAB", "COL:  "+ COULEURS_PER_VERTEX);
+        IND_PER_VERTEX = listeCarre.get(0).getIndices().length;
         // initialisation du buffer pour les vertex (4 bytes par float)
-        ByteBuffer bb = ByteBuffer.allocateDirect(listeCarre.size() * listeCarre.get(0).getSquareCoords().length * 4);
+        ByteBuffer bb = ByteBuffer.allocateDirect(listeCarre.size() * listeCarre.get(0).getCoords().length * 4);
         bb.order(ByteOrder.nativeOrder());
         vertexBuffer = bb.asFloatBuffer();
 
         // initialisation du buffer pour les couleurs (4 bytes par float)
-        ByteBuffer bc = ByteBuffer.allocateDirect(listeCarre.size() * tetraminoI.length * 4);
+        ByteBuffer bc = ByteBuffer.allocateDirect(listeCarre.size() * listeCarre.get(0).getCouleur().length * 4);
         bc.order(ByteOrder.nativeOrder());
         colorBuffer = bc.asFloatBuffer();
 
         // initialisation du buffer des indices
-        ByteBuffer dlb = ByteBuffer.allocateDirect(listeCarre.size() * Indices.length * 2);
+        ByteBuffer dlb = ByteBuffer.allocateDirect(listeCarre.size() * listeCarre.get(0).getIndices().length * 2);
         dlb.order(ByteOrder.nativeOrder());
         indiceBuffer = dlb.asShortBuffer();
 
-        for (Square s : listeCarre) {
-            vertexBuffer.put(s.getSquareCoords());
+        for (Forme s : listeCarre) {
+            vertexBuffer.put(s.getCoords());
+            colorBuffer.put(s.getCouleur());
+            short [] indices = s.getIndices();
+            indices = indiceplus(indices,lastIndice);
+            lastIndice += max(s.getIndices())+1;
+            indiceBuffer.put(indices);
 
-            switch (s.getTypeT()){
-                case 0:
-                case 10:
-                    colorBuffer.put(tetraminoI);
-                    break;
-                case 1:
-                case 11:
-                    colorBuffer.put(tetraminoO);
-                    break;
-                case 2:
-                case 12:
-                    colorBuffer.put(tetraminoT);
-                    break;
-                case 3:
-                case 13:
-                    colorBuffer.put(tetraminoL);
-                    break;
-                case 4:
-                case 14:
-                    colorBuffer.put(tetraminoJ);
-                    break;
-                case 5:
-                case 15:
-                    colorBuffer.put(tetraminoZ);
-                    break;
-                case 6:
-                case 16:
-                    colorBuffer.put(tetraminoS);
-                    break;
-                default:
-                    colorBuffer.put(squareColors);
-                    break;
-            }
-
-            indiceBuffer.put(Indices);
-            indiceplus();
         }
 
         indiceBuffer.position(0);
@@ -231,7 +162,7 @@ public class Batch {
 
         // Draw the square
         GLES30.glDrawElements(
-                GLES30.GL_TRIANGLES, Indices.length * nbCarre,
+                GLES30.GL_TRIANGLES, IND_PER_VERTEX * nbCarre,
                 GLES30.GL_UNSIGNED_SHORT, indiceBuffer);
 
 
@@ -242,9 +173,21 @@ public class Batch {
     }
 
 
-    public void indiceplus(){
-        for (int i = 0; i < Indices.length; i++) {
-            this.Indices[i] +=4;
+    public short[] indiceplus(short[] indices , int lastIndice){
+        for (int i = 0; i < indices.length; i++) {
+            indices[i] +=lastIndice;
         }
+        return indices;
+    }
+
+    public short max(short[] in){
+        short m = in[0];
+        for (short s:
+             in) {
+            if (s > m){
+                m = s;
+            }
+        }
+        return m;
     }
 }

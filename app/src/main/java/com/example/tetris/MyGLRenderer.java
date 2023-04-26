@@ -115,7 +115,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      * Methode pour dessiner les carré de maniere optimiser grace au Batching
      */
     public void drawGrilleOpt(float[] scratch, Grille grille, int taille) {
-        ArrayList<Square> listSquare = new ArrayList<>();
+        ArrayList<Forme> listSquare = new ArrayList<>();
 
         for (int i = 0; i < grille.getNbColonne(); i++) {
             for (int j = 0; j < grille.getNbLigne(); j++) {
@@ -125,7 +125,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
                 if (grille.getGrilleStatique().get(j).get(i) != 0 || grille.getGrilleDynamique().get(j).get(i) != 0){
                     listSquare.add(
-                        new Square(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),
+                        new T(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),
                                 grille.getGrilleStatique().get(j).get(i))-1, taille)
                     );
                 }

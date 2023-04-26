@@ -77,7 +77,7 @@ public class PreviewRenderer implements GLSurfaceView.Renderer{
 
 
     public void drawGrilleOpt(float[] scratch, Grille grille, int taille) {
-        ArrayList<Square> listSquare = new ArrayList<>();
+        ArrayList<Forme> listSquare = new ArrayList<>();
 
         for (int i = 0; i < grille.getNbColonne(); i++) {
             for (int j = 0; j < grille.getNbLigne(); j++) {
