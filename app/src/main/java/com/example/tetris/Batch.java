@@ -3,6 +3,8 @@ package com.example.tetris;
 import android.opengl.GLES30;
 import android.util.Log;
 
+import com.example.tetris.Formes.Forme;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;

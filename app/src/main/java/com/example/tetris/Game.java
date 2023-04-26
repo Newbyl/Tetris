@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tetris.Activities.LoseActivity;
+import com.example.tetris.Activities.WinActivity;
+
 public class Game extends AppCompatActivity {
 
     MyGLSurfaceView mGLView;
@@ -23,7 +26,8 @@ public class Game extends AppCompatActivity {
         Intent intent = getIntent();
         int x = intent.getIntExtra("XX",0);
         int y = intent.getIntExtra("YY",0);
-        mGLView.setGrille(x,y);
+        String forme = intent.getStringExtra("FF");
+        mGLView.setGrille(x,y,forme);
 
         TextView score = findViewById(R.id.score);
 
@@ -39,11 +43,11 @@ public class Game extends AppCompatActivity {
                     }
                         if (mGLView.anim())
                         {
-                            startActivity(new Intent(Game.this,WinActivity.class));
+                            startActivity(new Intent(Game.this, WinActivity.class));
                         }
 
                         if (mGLView.lose()){
-                            startActivity(new Intent(Game.this,LoseActivity.class));
+                            startActivity(new Intent(Game.this, LoseActivity.class));
                             break;
                         }
                 }
@@ -61,7 +65,8 @@ public class Game extends AppCompatActivity {
                         e.printStackTrace();
                     }
                         Tetromino tetromino = new Tetromino(mGLView.cascade());
-                        GLPrev.anim(tetromino);
+                        String typeForme = mGLView.cascadeForme();
+                        GLPrev.anim(tetromino,typeForme);
 
                         score.setText("SCORE\n" +
                                 "" + mGLView.grille.getScore());

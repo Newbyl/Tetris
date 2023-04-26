@@ -1,12 +1,12 @@
-package com.example.tetris;
+package com.example.tetris.Formes;
 
-public class T implements Forme{
+public class Star implements Forme {
     private float X;
     private int typeT;
-    private float[] tCoords;
+    private float[] starCoords;
     private float[] colors;
 
-    public T(float[] pos, int type, float size) {
+    public Star(float[] pos, int type, float size) {
         X = size;
         typeT = type;
 
@@ -14,15 +14,15 @@ public class T implements Forme{
         position[0] = pos[0];
         position[1] = pos[1];
 
-        tCoords = new float[]{
+        starCoords = new float[]{
+                0.0f + position[0], X + position[1], 0.0f,
+                -0.25f*X + position[0], 0.25f*X + position[1], 0.0f,
                 -X + position[0], 0.0f + position[1], 0.0f,
+                -0.25f*X + position[0], -0.25f*X + position[1], 0.0f,
+                0.0f + position[0], -X + position[1], 0.0f,
+                0.25f*X + position[0], -0.25f*X + position[1], 0.0f,
                 X + position[0], 0.0f + position[1], 0.0f,
-                X + position[0], 0.5f*X + position[1], 0.0f,
-                0.5f*X + position[0], 0.5f*X + position[1], 0.0f,
-                0.5f*X + position[0], X + position[1], 0.0f,
-                -0.5f*X + position[0], X + position[1], 0.0f,
-                -0.5f*X + position[0], 0.5f*X + position[1], 0.0f,
-                -X + position[0], 0.5f*X + position[1], 0.0f};
+                0.25f*X + position[0], 0.25f*X + position[1], 0.0f};
 
         colors = new float[]{
                 1.0f, 0.0f, 0.0f, 1.0f,
@@ -36,17 +36,9 @@ public class T implements Forme{
         };
     }
 
-    public float[] getTCoords() {
-        return tCoords;
-    }
-
-    public float[] getColors() {
-        return colors;
-    }
-
     @Override
     public float[] getCoords() {
-        return tCoords;
+        return starCoords;
     }
 
     @Override
@@ -56,15 +48,7 @@ public class T implements Forme{
 
     public short[] getIndices() {
         return new short[]{
-                0, 1, 3,
-                3, 1, 4,
-                4, 1, 7,
-                4, 7, 6,
-                6, 7, 5,
-                3, 4, 6,
+                0,1,7,1,2,3,3,4,5,5,6,7,1,7,3,3,5,7
         };
     }
-
-
-
 }

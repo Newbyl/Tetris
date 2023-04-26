@@ -1,10 +1,12 @@
-package com.example.tetris;
+package com.example.tetris.Activities;
 
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.example.tetris.MyGLSurfaceView;
 
 
 public class OpenGLES30Activity extends Activity   {

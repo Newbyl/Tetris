@@ -1,4 +1,4 @@
-package com.example.tetris;
+package com.example.tetris.Formes;
 
 public class Losange implements Forme {
     float X;

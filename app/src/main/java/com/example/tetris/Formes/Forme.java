@@ -1,4 +1,4 @@
-package com.example.tetris;
+package com.example.tetris.Formes;
 
 /**
  * Interface pour gerer plus facilement plusieurs formes

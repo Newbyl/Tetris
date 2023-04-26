@@ -23,8 +23,9 @@ public class PreviewView extends GLSurfaceView {
         requestRender();
     }
 
-    public void anim(Tetromino t) {
+    public void anim(Tetromino t , String typeforme) {
         previewRenderer.setTetromino(t);
+        previewRenderer.setTypeForme(typeforme);
         requestRender();
     }
 }

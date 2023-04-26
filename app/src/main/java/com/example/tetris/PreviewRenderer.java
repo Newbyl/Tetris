@@ -4,6 +4,14 @@ import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 
+import com.example.tetris.Formes.Cercle;
+import com.example.tetris.Formes.Forme;
+import com.example.tetris.Formes.Losange;
+import com.example.tetris.Formes.Pentagone;
+import com.example.tetris.Formes.Square;
+import com.example.tetris.Formes.Star;
+import com.example.tetris.Formes.Star7;
+
 import java.util.ArrayList;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -22,7 +30,7 @@ public class PreviewRenderer implements GLSurfaceView.Renderer{
     private Grille prev;
     private final float[] mSquarePosition = {0.0f, 0.0f};
     private Tetromino tetromino;
-
+    private String typeForme = "Square";
 
     public float[] setOrigin(float[] mModelMatrix, int taille){
         Matrix.setIdentityM(mModelMatrix,0);
@@ -86,9 +94,44 @@ public class PreviewRenderer implements GLSurfaceView.Renderer{
                 mSquarePosition[1] = (j * (taille * 2));
 
                 if (grille.getGrilleStatique().get(j).get(i) != 0 || grille.getGrilleDynamique().get(j).get(i) != 0){
-                    listSquare.add(
-                            new Square(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),grille.getGrilleStatique().get(j).get(i))-1, taille)
-                    );
+                    switch (typeForme){
+                        case "Square":
+                            listSquare.add(
+                                    new Square(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),
+                                            grille.getGrilleStatique().get(j).get(i))-1, taille)
+                            );
+                            break;
+                        case "Cercle":
+                            listSquare.add(
+                                    new Cercle(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),
+                                            grille.getGrilleStatique().get(j).get(i))-1, taille)
+                            );
+                            break;
+                        case "Losange":
+                            listSquare.add(
+                                    new Losange(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),
+                                            grille.getGrilleStatique().get(j).get(i))-1, taille)
+                            );
+                            break;
+                        case "Pentagone":
+                            listSquare.add(
+                                    new Pentagone(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),
+                                            grille.getGrilleStatique().get(j).get(i))-1, taille)
+                            );
+                            break;
+                        case "Star":
+                            listSquare.add(
+                                    new Star(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),
+                                            grille.getGrilleStatique().get(j).get(i))-1, taille)
+                            );
+                            break;
+                        case "Star7":
+                            listSquare.add(
+                                    new Star7(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),
+                                            grille.getGrilleStatique().get(j).get(i))-1, taille)
+                            );
+                            break;
+                    }
                 }
 
                 mModelMatrix = setOrigin(mModelMatrix,taille);
@@ -110,6 +153,9 @@ public class PreviewRenderer implements GLSurfaceView.Renderer{
         return shader;
     }
 
+    public void setTypeForme(String typeForme) {
+        this.typeForme = typeForme;
+    }
 
     public void setTetromino(Tetromino tetromino) {
         this.tetromino = tetromino;

@@ -20,6 +20,14 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
 
+import com.example.tetris.Formes.Cercle;
+import com.example.tetris.Formes.Forme;
+import com.example.tetris.Formes.Losange;
+import com.example.tetris.Formes.Pentagone;
+import com.example.tetris.Formes.Square;
+import com.example.tetris.Formes.Star;
+import com.example.tetris.Formes.Star7;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -42,9 +50,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Grille grille;
 
     private final ArrayList<String> listePieces = new ArrayList<>();
-    private final ArrayList<String> piecesPossible= new ArrayList<String>(7);;
+    private final ArrayList<String> piecesPossible= new ArrayList<String>(7);
 
-
+    private String typeForme = "Square";
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
         GLES30.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -124,10 +132,44 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 mSquarePosition[1] = (j * (taille * 2));
 
                 if (grille.getGrilleStatique().get(j).get(i) != 0 || grille.getGrilleDynamique().get(j).get(i) != 0){
-                    listSquare.add(
-                        new T(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),
-                                grille.getGrilleStatique().get(j).get(i))-1, taille)
-                    );
+                    switch (typeForme){
+                        case "Square":
+                            listSquare.add(
+                                    new Square(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),
+                                            grille.getGrilleStatique().get(j).get(i))-1, taille)
+                            );
+                            break;
+                        case "Cercle":
+                            listSquare.add(
+                                    new Cercle(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),
+                                            grille.getGrilleStatique().get(j).get(i))-1, taille)
+                            );
+                            break;
+                        case "Losange":
+                            listSquare.add(
+                                    new Losange(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),
+                                            grille.getGrilleStatique().get(j).get(i))-1, taille)
+                            );
+                            break;
+                        case "Pentagone":
+                            listSquare.add(
+                                    new Pentagone(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),
+                                            grille.getGrilleStatique().get(j).get(i))-1, taille)
+                            );
+                            break;
+                        case "Star":
+                            listSquare.add(
+                                    new Star(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),
+                                            grille.getGrilleStatique().get(j).get(i))-1, taille)
+                            );
+                            break;
+                        case "Star7":
+                            listSquare.add(
+                                    new Star7(mSquarePosition,Integer.max(grille.getGrilleDynamique().get(j).get(i),
+                                            grille.getGrilleStatique().get(j).get(i))-1, taille)
+                            );
+                            break;
+                    }
                 }
                 mModelMatrix = setOrigin(mModelMatrix,taille);
             }
@@ -229,5 +271,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     public String getPiecePrev() {
         return listePieces.get(0);
+    }
+
+    public String getTypeForme() {
+        return typeForme;
+    }
+
+    public void setTypeForme(String typeForme) {
+        this.typeForme = typeForme;
     }
 }

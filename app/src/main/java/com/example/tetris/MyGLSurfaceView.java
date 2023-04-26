@@ -73,6 +73,10 @@ public class MyGLSurfaceView extends GLSurfaceView {
         return mRenderer.getPiecePrev();
     }
 
+    public String cascadeForme(){
+        return mRenderer.getTypeForme();
+    }
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -122,8 +126,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
     }
 
 
-    public void setGrille(int x , int y){
+    public void setGrille(int x , int y,String forme){
         this.grille = new Grille(y,x,0);
+        mRenderer.setTypeForme(forme);
         mRenderer.setGrille(this.grille);
         mRenderer.initForme();
 

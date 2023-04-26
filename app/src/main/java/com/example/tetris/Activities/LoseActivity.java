@@ -1,10 +1,12 @@
-package com.example.tetris;
+package com.example.tetris.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.tetris.R;
 
 public class LoseActivity extends AppCompatActivity {
 
