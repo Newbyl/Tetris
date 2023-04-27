@@ -2,7 +2,6 @@ package com.example.tetris.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,7 +9,7 @@ import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.tetris.Game;
+import com.example.tetris.Game.Game;
 import com.example.tetris.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,9 +25,7 @@ public class MainActivity extends AppCompatActivity {
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // Récupérer la valeur sélectionnée
                 selectedItem = parent.getItemAtPosition(position).toString();
-                Log.d("Spinner", "Item sélectionné : " + selectedItem);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {

@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.tetris;
+package com.example.tetris.Game;
 
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
 
+import com.example.tetris.Batch;
 import com.example.tetris.Formes.Cercle;
 import com.example.tetris.Formes.Forme;
 import com.example.tetris.Formes.Losange;
@@ -27,6 +28,8 @@ import com.example.tetris.Formes.Pentagone;
 import com.example.tetris.Formes.Square;
 import com.example.tetris.Formes.Star;
 import com.example.tetris.Formes.Star7;
+import com.example.tetris.Logique.Grille;
+import com.example.tetris.Logique.Tetromino;
 
 import java.util.ArrayList;
 import java.util.Random;

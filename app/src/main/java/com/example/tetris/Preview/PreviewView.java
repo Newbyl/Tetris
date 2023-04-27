@@ -1,8 +1,11 @@
-package com.example.tetris;
+package com.example.tetris.Preview;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
+
+import com.example.tetris.Logique.Grille;
+import com.example.tetris.Logique.Tetromino;
 
 public class PreviewView extends GLSurfaceView {
 

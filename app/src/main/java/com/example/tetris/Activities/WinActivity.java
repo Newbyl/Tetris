@@ -6,7 +6,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.tetris.Game;
+import com.example.tetris.Game.Game;
 import com.example.tetris.R;
 
 public class WinActivity extends AppCompatActivity {

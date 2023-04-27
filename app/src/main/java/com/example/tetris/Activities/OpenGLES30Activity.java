@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.example.tetris.MyGLSurfaceView;
+import com.example.tetris.Game.MyGLSurfaceView;
 
 
 public class OpenGLES30Activity extends Activity   {

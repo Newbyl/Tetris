@@ -33,7 +33,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Game"
+            android:name=".Game.Game"
             android:exported="false"
             android:theme="@style/Theme.Design.NoActionBar">
             <meta-data

@@ -1,4 +1,4 @@
-package com.example.tetris;
+package com.example.tetris.Game;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tetris.Activities.LoseActivity;
 import com.example.tetris.Activities.WinActivity;
+import com.example.tetris.Preview.PreviewView;
+import com.example.tetris.R;
+import com.example.tetris.Logique.Tetromino;
 
 public class Game extends AppCompatActivity {
 

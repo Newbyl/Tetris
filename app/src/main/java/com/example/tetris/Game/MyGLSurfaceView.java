@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package com.example.tetris;
+package com.example.tetris.Game;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+
+import com.example.tetris.Logique.Grille;
 
 
 public class MyGLSurfaceView extends GLSurfaceView {

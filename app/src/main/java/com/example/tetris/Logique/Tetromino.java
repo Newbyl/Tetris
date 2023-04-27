@@ -1,4 +1,4 @@
-package com.example.tetris;
+package com.example.tetris.Logique;
 
 public class Tetromino {
 

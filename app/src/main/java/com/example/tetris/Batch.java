@@ -4,6 +4,7 @@ import android.opengl.GLES30;
 import android.util.Log;
 
 import com.example.tetris.Formes.Forme;
+import com.example.tetris.Game.MyGLRenderer;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
